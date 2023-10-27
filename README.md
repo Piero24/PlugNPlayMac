@@ -1,13 +1,4 @@
-<!--PlugNPlayMac-->
-<!--PlugNPlayMac-->
-<!--**RELEASED-DATA**-->
-
 <div id="top"></div>
-
-<!-- Working ✅ Work in progress ⚠️ ~~Deprecate~~ ⛔️ -->
-**Project Status:** Work in progress ⚠️ <a href="#maintenance">⇩</a>
-<br/>
-**Percentage Completely:** 40% 🔋 <a href="#roadmap">⇩</a>
 <br/>
 <br/>
 <br/>
@@ -15,28 +6,18 @@
 
 
 <p align="center">
-  <img src="https://cdn-icons-png.flaticon.com/512/8706/8706828.png" width="100" height="100">
+  <img src="./image/logo.png" width="100" height="100">
 </p>
 <h1 align="center">
     <a href="https://github.com/Piero24/PlugNPlayMac">PlugNPlayMac</a>
 </h1>
 <p align="center">
-    <!-- BADGE -->
-    <!--
-        *** You can make other badges here
-        *** [shields.io](https://shields.io/)
-        *** or here
-        *** [CircleCI](https://circleci.com/)
-    -->
     <a href="https://github.com/Piero24/PlugNPlayMac/commits/master">
     <img src="https://img.shields.io/github/last-commit/piero24/PlugNPlayMac">
     </a>
     <a href="https://github.com/Piero24/PlugNPlayMac">
     <img src="https://img.shields.io/badge/Maintained-yes-green.svg">
     </a>
-    <!--<a href="https://github.com/Piero24/PlugNPlayMac">
-    <img src="https://img.shields.io/badge/Maintained%3F-no-red.svg">
-    </a> -->
     <a href="https://github.com/Piero24/twitch-stream-viewer/issues">
     <img src="https://img.shields.io/github/issues/piero24/PlugNPlayMac">
     </a>
@@ -45,42 +26,55 @@
     </a>
 </p>
 <p align="center">
-    An awesome README template to jumpstart your projects!
+    A script to automate tasks when connect a device to your Mac
     <br/>
-    <a href="#index"><strong>Explore the docs »</strong></a>
-    <br/>
-    <br/>
-    <a href="https://github.com/Piero24/PlugNPlayMac">View Demo</a>
-    •
     <a href="https://github.com/Piero24/PlugNPlayMac/issues">Report Bug</a>
     •
     <a href="https://github.com/Piero24/PlugNPlayMac/issues">Request Feature</a>
 </p>
 
-
 ---
-
 
 <br/><br/>
 <h2 id="itroduction">📔  Itroduction</h2>
 <p>
-    This section contains a series of information on 
-    how to use the code such as the prerequisites, the dev tools to use etc.
+    This is a script that automates tasks when you connect a device to your Mac.
+    Let's add some context to the project!
+    <br/>
+    I have written this shell script to automate tasks when I return home and connect my Mac to an external monitor. Every time I connect my Mac to the monitor, I have to perform several tasks:
+    <ul>
+        <li>Run <a href="https://github.com/MonitorControl/MonitorControl">MonitorControl</a> to adjust the external monitor's brightness.</li>
+        <li>Launch <a href="https://www.elgato.com/us/en/s/downloads">Elgato Stream Deck.</a></li>
+        <li>Start <a href="https://www.google.com/drive/download/">Google Drive</a> to access my files.</li>
+        <li>Activate <a href="https://apps.apple.com/bg/app/amphetamine/id937984704?mt=12">Amphetamine</a> to prevent my Mac from going to sleep.</li>
+        <li>Run <a href="https://github.com/zackelia/bclm">bclm</a> to preserve battery health.</li>
+    </ul>
+    This process was very frustrating because I had to perform these tasks manually every time. Furthermore, each time I disconnected the monitor, I had to repeat these operations to close all the apps.
+    <br/>
+    <br/>
+    With this script, the apps will open automatically when I connect my home monitor to the MacBook and will close when I disconnect the monitor. Additionally, it recognizes the Wi-Fi network, so it only opens the apps when I connect to a specific home monitor. This ensures that nothing opens if I connect to an external monitor at the office with a similar name.
+    <br/>
+    <br/>
+    <img src="./image/Cover.png">
+    <br/>
+    <br/>
+    In addition to this, I have also prepared a shortcut (for the <a href="https://support.apple.com/en-gb/guide/shortcuts-mac/apdf22b0444c/mac">Apple Shortcut app</a>) to enable/disable various functions from the Mac's menu bar. This allows me to control the functions even when I am not at home. While there are apps that perform similar functions, I wanted to minimize the number of applications running constantly in the background. Therefore, I chose to write a script to accomplish all of this.
+    <br/>
+    <br/>
+    I have also opted to replace <a href="https://apps.apple.com/bg/app/amphetamine/id937984704?mt=12">Amphetamine</a> with <a href="https://ss64.com/osx/caffeinate.html">Caffeinate</a>, which is pre-installed on every Mac. Additionally, I replaced <a href="https://github.com/AppHouseKitchen/AlDente-Charge-Limiter">AlDente</a> with <a href="https://github.com/zackelia/bclm">bclm</a>, which has fewer features but is more convenient for my purposes.
 </p>
-<br/>
-<img src="https://github.githubassets.com/images/modules/site/social-cards/github-social.png">
-<br/>
-<br/>
 
 
+<!--
 <h2 id="made-in"><br/>🛠  Built in</h2>
 <p>
-    This section should list all the major frameworks/libraries used to start your project. Leave any add-ons / plug-ins for the thanks section.
+    Il presente script è stato scritto in <strong>Shell</strong> eccetto <a href="https://github.com/zackelia/bclm">bclm</a> che è stato preso da un repository esterno ed è scritto in <strong> Swift </strong>. 
 </p>
 <br/>
 <a href="https://github.com/Piero24/Template-README">Programming Language 1</a> • <a href="https://github.com/Piero24/Template-README/issues">Programming Language 2</a> • <a href="https://github.com/Piero24/Template-README/issues">Programming Language 3</a>
 
 <p align="right"><a href="#top">⇧</a></p>
+-->
 
 
 <h2 id="index"><br/>📋  Index</h2>
@@ -102,27 +96,48 @@
 
 <h2 id="documentation"><br/><br/>📚  Documentation</h2>
 <p>
-    Including pieces of documentation will allow you to better understand what the program does. At this point it is best to write only short portions.
+    The script consists of 3 .sh files, 1 .swift file, and 1 .plist file. The .plist file is necessary to launch the script at Mac startup. The .swift file is required to limit battery charging. The 3 .sh files contain the script's code.
+    <ul>
+        <li>
+            <strong>PlugNPlayMac.sh</strong> is the main script that runs when the monitor is connected. This script handles the opening of all necessary apps and starts `caffeinate` and `bclm` to limit battery charging.
+        </li>
+        <br/>
+        <li>
+            <strong>PNPMacParam.sh</strong> contains configurable settings for the script, such as which apps to open, the names of monitors and Wi-Fi networks that trigger the script, and the battery limit for `bclm`.
+        </li>
+        <br/>
+        <li>
+            <strong>PNPMacInstaller.sh</strong> is the installation file (currently responsible for moving files to the correct paths, although some manual steps are required). In future versions, efforts will be made to automate the installation process as much as possible, even though certain functions, such as disk access, may still need to be performed manually.
+        </li>
+        <br/>
+        <li>
+            <strong>com.launch.plug.and.play.mac.plist</strong> is responsible for launching the script at Mac startup. In a future version, it will be integrated into the main file, which will automatically write it to the LaunchAgents folder, eliminating the need for manual copying in case it is accidentally deleted.
+        </li>
+    </ul>
 </p>
-<p>
-    For a broader view it is better to refer the user to the documentation via links: <a href="https://shields.io/">Documentation »</a>
-</p>
-
 
 <p align="right"><a href="#top">⇧</a></p>
 
 
 <h2 id="prerequisites"><br/>🧰  Prerequisites</h2>
 <p>
-    This is an example of how to list the things needed to use the software and how to install them.
+    There are no specific dependencies or requirements to be met for using this script.
+    The only thing required is to have a Mac with <strong>macOS Ventura</strong> (or higher) installed. Additional requirements may apply to <a href="https://github.com/zackelia/bclm">bclm</a>, so please check the original repository before proceeding with the installation.
+    <p>
+        <strong>NOTE: </strong> This script has been tested only on <strong>MacBook Pro (13-inch, 2018, Four Thunderbolt 3 ports)</strong> with <strong>macOS Ventura 13.5.1</strong> and <strong>macOS Sonoma 14.0</strong>.
+    </p>
+    <br/>
+    <p align="center">
+        <h3  align="center">
+            ⚠️ <strong>ATTENTION</strong> ⚠️
+        </h3>
+        <p  align="center">
+            Currently, bclm works exclusively on Macs with <strong>Intel</strong> processors and not on Macs with <strong>Apple Silicon</strong> processors (<strong>M1, M2, etc</strong>). The rest of the functions work without any issues, so Caffeinate and the apps will start as expected, but bclm won't run. As soon as I have access to a Mac with an Apple Silicon processor, I will update the code to support these processors. Otherwise, if anyone would like to contribute, they are welcome to do so.
+        </p>
+    </p>
 </p>
 
-```
-Pre-requisites section
-```
-
 <p align="right"><a href="#top">⇧</a></p>
-
 
 <h2 id="how-to-start"><br/>⚙️  How to Start</h2>
 <p>
@@ -158,14 +173,13 @@ const API_KEY = 'ENTER YOUR API';
 
 <h2 id="roadmap"><br/><br/>🛫  Roadmap</h2>
 
-- [x] Upload code
-- [x] README file
-- [x] Multi-language README
-    - [x] Inglese
-    - [x] Italaino
-- [x] Point 1
-- [ ] Point 2
-- [ ] Point 3
+- [x] Switch from AlDente to bclm
+- [ ] Add bclm support for Apple Silicon (whenever I have access to a Mac with an Apple Silicon processor)
+- [ ] Bug Fixing
+- [ ] Switch to Swift
+- [ ] Reduce anutomate the procedure for the installation
+- [ ] Add AutoUpdate
+
 
 <p>
     See the 
@@ -199,11 +213,9 @@ const API_KEY = 'ENTER YOUR API';
 <p>
     To <strong>report a bug</strong> or to request the implementation of <strong>new features</strong>, it is strongly recommended to use the <a href="https://github.com/Piero24/PlugNPlayMac/issues"><strong>ISSUES tool from Github »</strong></a>
 </p>
-<br/>
 <p>
     Here you may already find the answer to the problem you have encountered, in case it has already happened to other people. Otherwise you can report the bugs found.
 </p>
-<br/>
 <strong>
     ATTENTION: To speed up the resolution of problems, it is recommended to answer all the questions present in the request phase in an exhaustive manner.
 </strong>
@@ -212,8 +224,6 @@ const API_KEY = 'ENTER YOUR API';
 <p>
     (Even in the phase of requests for the implementation of new functions, we ask you to better specify the reasons for the request and what final result you want to obtain).
 </p>
-<br/>
-
 <p align="right"><a href="#top">⇧</a></p>
 
 
@@ -221,20 +231,15 @@ const API_KEY = 'ENTER YOUR API';
 <p>
     There are currently no parts of the code under maintenance. You can quickly check the <a href="#top">status of the project</a> at the top of the page.
 </p>
-<br/>
 <p>
     This section details which parts of the code are under maintenance and for what reason.
 </p>
-
-<br/>
 
 <h4 id="changelog"><br/>📟  Changelog</h4>
 <p>
     Here you can find all the information regarding the fixes and implementations that took place in the various program reviews.
 </p>
-
-<br/>
-<a href="https://github.com/Piero24/Template-README/blob/main/CHANGELOG.md"><strong>Explore the changelog docs</strong></a>
+<a href="https://github.com/Piero24/PlugNPlayMac/blob/main/CHANGELOG.md"><strong>Explore the changelog docs</strong></a>
 <br/>
 
 <p align="right"><a href="#top">⇧</a></p>
@@ -242,19 +247,21 @@ const API_KEY = 'ENTER YOUR API';
  --- 
 
 <h2 id="license"><br/>🔍  License</h2>
-<strong>GNU GENERAL PUBLIC LICENSE</strong>
+<strong>MIT LICENSE</strong>
 <br/>
-<i>Version 3, 29 June 2007</i>
+<i>Copyright (c) 2023 Andrea Pietrobon</i>
 <br/>
 <br/>
-<i>Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/> Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.</i>
+<i>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction.</i>
 <br/>
 <br/>
 <i>Preamble</i>
 <br/>
 <i>The GNU General Public License is a free, copyleft license for software and other kinds of works.</i>
 <br/>
-<a href="https://github.com/Piero24/Template-README/blob/main/LICENSE"><strong>License Documentation »</strong></a>
+<a href="https://github.com/Piero24/PlugNPlayMac/blob/main/LICENSE"><strong>License Documentation »</strong></a>
 <br/>
 <br/>
 
@@ -283,10 +290,6 @@ const API_KEY = 'ENTER YOUR API';
     To find out more, visit my <a href="https://www.pietrobonandrea.com">
     <strong>website »</strong></a>
 </p>
-<p>
-    <strong>The Copyright (C) of this project is held exclusively by my person.</strong>
-</p>
-
 
 <p align="right"><a href="#top">⇧</a></p>
 
@@ -300,20 +303,16 @@ the individual licenses are indicated in the following section.
 <br/>
 <strong>Software list:</strong>
 <br/>
-<table>
+<table align="center">
   <tr  align="center">
     <th>Software</th>
     <th>License owner</th> 
     <th>License type</th> 
-    <th>Link</th>
-    <th>Note</th>
   </tr>
   <tr  align="center">
-    <td>None</td>
-    <td></td> 
-    <td></td>
-    <td></td>
-    <td></td>
+    <td><a href="https://github.com/zackelia/bclm">bclm</a></td>
+    <td><a href="https://github.com/zackelia">zackelia</a></td> 
+    <td><a href="https://github.com/zackelia/bclm/blob/main/LICENSE">MIT</a></td>
   </tr>
 </table>
 
@@ -321,4 +320,4 @@ the individual licenses are indicated in the following section.
 
 
 ---
-> *<p align="center"> Copyrright (C) by Pietrobon Andrea <br/> Released date: **RELEASED-DATA***
+> *<p align="center"> Copyrright (C) by Pietrobon Andrea <br/> Released date: **Nov-01-2023***
