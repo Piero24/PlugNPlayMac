@@ -6,7 +6,7 @@
 
 
 <p align="center">
-  <img src="./image/logo.png" width="100" height="100">
+  <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/logo.png" width="100" height="100">
 </p>
 <h1 align="center">
     <a href="https://github.com/Piero24/PlugNPlayMac">PlugNPlayMac</a>
@@ -55,7 +55,7 @@
     With this script, the apps will open automatically when I connect my home monitor to the MacBook and will close when I disconnect the monitor. Additionally, it recognizes the Wi-Fi network, so it only opens the apps when I connect to a specific home monitor. This ensures that nothing opens if I connect to an external monitor at the office with a similar name.
     <br/>
     <br/>
-    <img src="./image/Cover.png">
+    <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/Cover.png">
     <br/>
     <br/>
     In addition to this, I have also prepared a shortcut (for the <a href="https://support.apple.com/en-gb/guide/shortcuts-mac/apdf22b0444c/mac">Apple Shortcut app</a>) to enable/disable various functions from the Mac's menu bar. This allows me to control the functions even when I am not at home. While there are apps that perform similar functions, I wanted to minimize the number of applications running constantly in the background. Therefore, I chose to write a script to accomplish all of this.
