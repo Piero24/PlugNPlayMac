@@ -1,8 +1,6 @@
 <div id="top"></div>
 <br/>
 <br/>
-<br/>
-<br/>
 
 
 <p align="center">
@@ -114,7 +112,10 @@
             <strong>com.launch.plug.and.play.mac.plist</strong> is responsible for launching the script at Mac startup. In a future version, it will be integrated into the main file, which will automatically write it to the LaunchAgents folder, eliminating the need for manual copying in case it is accidentally deleted.
         </li>
     </ul>
+    <br/>
+    In case of any errors, you can check the logs in the file <strong>plug.and.play.mac.log</strong> located in the folder <strong>/tmp/plug.and.play.mac.log</strong>.
 </p>
+
 
 <p align="right"><a href="#top">⇧</a></p>
 
@@ -132,7 +133,7 @@
             ⚠️ <strong>ATTENTION</strong> ⚠️
         </h3>
         <p  align="center">
-            Currently, bclm works exclusively on Macs with <strong>Intel</strong> processors and not on Macs with <strong>Apple Silicon</strong> processors (<strong>M1, M2, etc</strong>). The rest of the functions work without any issues, so Caffeinate and the apps will start as expected, but bclm won't run. As soon as I have access to a Mac with an Apple Silicon processor, I will update the code to support these processors. Otherwise, if anyone would like to contribute, they are welcome to do so.
+            <strong>Currently, bclm works exclusively on Macs with Intel processors and not on Macs with Apple Silicon processors (M1, M2, etc)</strong>. The rest of the functions work without any issues, so Caffeinate and the apps will start as expected, but bclm won't run. As soon as I have access to a Mac with an Apple Silicon processor, I will update the code to support these processors. Otherwise, if anyone would like to contribute, they are welcome to do so.
         </p>
     </p>
 </p>
@@ -146,24 +147,106 @@
 <br/>
 
 
-1. Get a free API Key  <a href="https://example.com">here</a>
-2. Clone the repo
-  
-```sh
-git clone https://github.com/your_username_/Project-Name.git
-```
+1. Download the latest version of the script from <a href="https://github.com/Piero24/PlugNPlayMac/archive/refs/heads/main.zip">here</a> or clone the repo:
+    - ```sh
+        git clone https://github.com/Piero24/PlugNPlayMac.git
+        ```
+2. Connect the macbook to your wifi and monitor open the terminal and run the following commands:
+    - ```sh
+        ioreg -lw0 | grep 'IODisplayEDID' | sed '/[^<]*</s///' | xxd -p -r | strings -10
+        ```
+        It will return the name of the monitor seen by the Mac. In my case, it is `LG IPS FULLHD`.
+    - ```sh
+        /Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | awk '/ SSID:/ {print $2}'
+        ```
+        It will return the name of the wifi seen by the Mac. In my case, it is `Home-Wifi-Name`.
 
-3. Install NPM packages
-  
-```sh
-npm install
-```
+3. Open the `PNPMacParam.sh` file and edit the following variables:
+    - ```sh
+        listWifiNames=("Wifi Name" "Other Wifi Name") 
+        ```
+    - ```sh
+        listDisplayNames=("Display Name" "Other Display Name")
+        ```
+    - ```sh
+        listAppToOpen=("App Name" "Other App Name")
+        ```
+    - ```sh
+        batteryValue=77
+        ```
+    - ```sh
+        accountUser="User Name"
+        ```
+    Where `listWifiNames` is the list of Wi-Fi networks and `listDisplayNames` are the list of monitors that trigger the script, `listAppToOpen` is the list of apps to open, `batteryValue` is the battery limit for `bclm` (must be less or equal to 100), and `accountUser` is the name of the user account on your Mac. So in my case, the values are:
+    ```sh
+        listWifiNames=("Home-Wifi-Name")
+        listDisplayNames=("LG IPS FULLHD")
+        listAppToOpen=("MonitorControl" "Elgato Stream Deck")
+        batteryValue=77
+        accountUser="MY USERNAME"
+    ```
+    Where `Home-Wifi-Name`and `LG IPS FULLHD` are the values founded before, `MonitorControl` and `Elgato Stream Deck` are the apps to open, `77` is the battery limit for `bclm`, and `MY USERNAME` is the name of the user account on my Mac. You can add as mach wifi, monitor, and app you want.
+ 
 
-4. Enter your API in `config.js`
-  
-```js
-const API_KEY = 'ENTER YOUR API';
-```
+    **NOTE:** The `batteryValue` of <a href="https://github.com/zackelia/bclm">bclm</a> as mentioned it will be 3 point greather then the value setted in the script. So if you set `batteryValue=77` the battery limit will be 80.
+
+4. Add the password to keychain (this is needed for run persistence on bclm and perceive other task):
+    - ```sh
+        security add-generic-password -s 'PlugNPlayMac'  -a 'MY USERNAME' -w 'MY MACBOOK PASSWORD'
+        ```
+        `MY USERNAME` is the name of the user account on my Mac and `MY MACBOOK PASSWORD` is the password of my Mac. It will be stored on keychain with the name `PlugNPlayMac` and will be used by the script to run the task.
+        
+    Alternativelly you can add the password manually on keychain in this way:
+
+    - Open Keychain Access 
+        
+        <img src="./image/KeychainAccessIcon.png" width="100" height="100">
+    
+    - Select Open Keychain Access 
+        
+        <img src="./image/OpenedKey.png">
+    
+    - Add the new password
+        
+        <img src="./image/NewPass.png">
+
+5. Open the terminal ad run the installer:
+    - ```sh
+        /Users/YOUR-NAME/Downloads/PlugNPlayMac-main/PNPMacInstaller.sh
+        ```
+        Where `YOUR-NAME` is the name of your user account on your Mac.
+
+6. Give the script the Full Disk Access (Mandatory for run it correctly):
+    - Open System Settings > Privacy & Security > Full Disk Access
+    - Click on the plus icon at the bottom of the list and digit your password
+        
+        <img src="./image/BeforeFullDisk.png">
+
+    - Press cmd + shift + G and digit /bin
+
+        <img src="./image/bin.png">
+
+    - Select bash and click open
+    - Click again on the plus icon at the bottom of the list and digit your password
+    - Press cmd + shift + G and digit /usr/local/bin/PlugNPlayMac
+
+        <img src="./image/bash.png">
+
+    - Select blcm and click open
+
+    This is the final result:
+
+    <img src="./image/AfterFullDisk.png">
+
+7.  Test the script (the pass it will be required only the first time you run the script):
+    - Digit on therminal `/usr/local/bin/PlugNPlayMacPlugNPlayMac.sh` ad enter your password
+    - Control + c to exit 
+
+8. Reboot your Mac
+
+9. Open terminal and digit `launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist``
+
+Done! Now the script will run automatically when you connect your Mac to the monitor and will close when you disconnect it. Additionally, you can use the shortcut to enable/disable various functions from the Mac's menu bar.
 
 <p align="right"><a href="#top">⇧</a></p>
 
