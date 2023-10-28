@@ -200,15 +200,15 @@
 
     - Open Keychain Access 
         
-        <img src="./image/KeychainAccessIcon.png" width="100" height="100">
+        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/KeychainAccessIcon.png" width="100" height="100">
     
     - Select Open Keychain Access 
         
-        <img src="./image/OpenedKey.png">
+        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/OpenedKey.png">
     
     - Add the new password
         
-        <img src="./image/NewPass.png">
+        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/NewPass.png">
 
 5. Open the terminal ad run the installer:
     - ```sh
@@ -220,23 +220,23 @@
     - Open System Settings > Privacy & Security > Full Disk Access
     - Click on the plus icon at the bottom of the list and digit your password
         
-        <img src="./image/BeforeFullDisk.png">
+        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/BeforeFullDisk.png">
 
     - Press cmd + shift + G and digit /bin
 
-        <img src="./image/bin.png">
+        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/bin.png">
 
     - Select bash and click open
     - Click again on the plus icon at the bottom of the list and digit your password
     - Press cmd + shift + G and digit /usr/local/bin/PlugNPlayMac
 
-        <img src="./image/bash.png">
+        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/bash.png">
 
     - Select blcm and click open
 
     This is the final result:
 
-    <img src="./image/AfterFullDisk.png">
+    <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/AfterFullDisk.png">
 
 7.  Test the script (the pass it will be required only the first time you run the script):
     - Digit on therminal `/usr/local/bin/PlugNPlayMacPlugNPlayMac.sh` ad enter your password
