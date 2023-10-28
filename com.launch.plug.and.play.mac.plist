@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+ <!-- 
+  For more info on the .plist file visit:
+  - https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html#//apple_ref/doc/uid/10000172i-SW7-BCIEDDBJ
+  - https://www.reddit.com/r/shortcuts/comments/qo9jfb/run_script_when_dockexternal_monitor_is_connected/
+  - https://apple.stackexchange.com/questions/336960/how-do-i-get-an-applescript-application-to-automatically-run-at-login
+ -->
+
+<!-- Mac Studio Setup -->
+
+<plist version="1.0">  
+  <dict>
+    <key>Label</key>
+    <string>com.launch.plug.and.play.mac</string>  
+    <key>ProgramArguments</key>  
+    <array>
+      <!-- Use ~ to represent the user's home directory -->
+      <string>/usr/local/bin/PlugNPlayMac/PlugNPlayMac.sh</string>
+    </array>
+    <key>KeepAlive</key>  
+    <true/>  
+    <key>RunAtLoad</key>  
+    <true/>
+    <key>LaunchOnlyOnce</key>
+	  <true/>
+    <key>StartInterval</key>
+	  <integer>120</integer>
+    <key>StandardErrorPath</key>  
+    <string>/tmp/plug.and.play.mac.log</string>  
+    <key>StandardOutPath</key>  
+    <string>/tmp/plug.and.play.mac.log</string>  
+  </dict>  
+</plist>  

@@ -91,7 +91,4 @@ iOSInjectionProject/
 
 # Other files
 .DS_Store
-PlugNPlayMac.sh
-PNPMacInstaller.sh
-PNPMacParam.sh
-com.launch.plug.and.play.mac.plist
+personalParam.sh

@@ -244,9 +244,16 @@
 
 8. Reboot your Mac
 
-9. Open terminal and digit `launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist``
+9. Open terminal and digit `launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist`
 
 Done! Now the script will run automatically when you connect your Mac to the monitor and will close when you disconnect it. Additionally, you can use the shortcut to enable/disable various functions from the Mac's menu bar.
+
+👉  You can get the PlagNPlayMac shortcut from this <a href="https://www.icloud.com/shortcuts/f17d6b70db3a417799a35f1b0b684540">link</a> or you can create it manually.
+
+If you want to stop the automation of the script, you can run the following command on the terminal:
+```sh
+launchctl unload /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
+```
 
 <p align="right"><a href="#top">⇧</a></p>
 
