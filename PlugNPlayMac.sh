@@ -1,16 +1,14 @@
 #!/bin/bash
 
-# Find it in the list without searching and then delete. It's just a dumb bug. 
-# https://apple.stackexchange.com/a/344380/460842
-
 # bash -c "nohup caffeinate -u -i -d &"
 # ps aux -o ppid | grep caffeinate
-# launchctl load /Library/LaunchAgents/com.launch.mac.studio.setup.plist
-# launchctl unload /Library/LaunchAgents/com.launch.mac.studio.setup.plist
+# launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
+# launchctl unload /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
 #
 # BEFORE STARTING THE SCRIPT WITH launchctl load YOU MAST GIV FULL DISK ACCESS TO /BIN/BASH AND BCLM
 
-source /usr/local/bin/PlugNPlayMac/PNPMacParam.sh
+# source /usr/local/bin/PlugNPlayMac/PNPMacParam.sh
+source /Users/pietrobon/Documents/Developer/GitHub/PlugNPlayMac/personalParam.sh
 
 myPassword=$(getPW)
 # ID of the last active caffeinate process (0 at start of the script)
@@ -82,7 +80,7 @@ while true; do
         # Launch a nohup caffeinate for run caffeinate in background
         # This prevent the mac to sleep
         # "man caffeinate" for more information
-        nohup caffeinate -u -i -d &
+        (nohup caffeinate -u -i -d & wait 2>/dev/null) &
         # save the caffeinate process ID
         PMSETPID=$!
         # kill $PMSETPID
@@ -94,9 +92,12 @@ while true; do
 
         # Open each application in the list
         for applicationName in "${listAppToOpen[@]}"; do
-            open -a "$applicationName"
-            date_string=$(date +"%d %b %Y - %H:%M")
-            echo "$date_string: Starting the APP: $applicationName"
+            ate_string=$(date +"%d %b %Y - %H:%M")
+            if ! open -a "$applicationName" 2>&1 | grep -q "Unable to find application named '$applicationName'"; then
+                echo "$date_string: Starting the APP: $applicationName"
+            else
+                echo "$date_string: Unable to find the APP: $applicationName"
+            fi
         done
 
         if $isAppleSilicon; then
@@ -145,7 +146,7 @@ while true; do
 
         # Close each application in the list
         for applicationName in "${listAppToOpen[@]}"; do
-            osascript -e "tell application \"$applicationName\" to quit"
+            (osascript -e "tell application \"$applicationName\" to quit" & wait) 2>/dev/null
             date_string=$(date +"%d %b %Y - %H:%M")
             echo "$date_string: $applicationName closed correctly"
         done
@@ -181,7 +182,12 @@ while true; do
         pkill caffeinate
 
         date_string=$(date +"%d %b %Y - %H:%M")
-        echo "$date_string: Persistence has bean disabled"
+        
+        if [ $? -eq 0 ]; then
+            echo "$date_string: All caffeinate process killed successfully"
+        else
+            echo "$date_string: No caffeinate process found to kill"
+        fi
 
     fi
     
@@ -190,12 +196,12 @@ while true; do
         # When the status change from sleep to awake, start a new caffeinate process
         if ! system_profiler SPDisplaysDataType | grep -q "Display Asleep: Yes"; then
             isSleep=false
-            nohup caffeinate -u -i -d &
+            (nohup caffeinate -u -i -d & wait 2>/dev/null) &
             # save the caffeinate process ID
             PMSETPID=$!
 
             date_string=$(date +"%d %b %Y - %H:%M")
-            echo "$date_string: Persistence has bean disabled"
+            echo "$date_string: Starting caffeinate with ID: $PMSETPID"
 
         else 
             sleep 30
