@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# test
-
 # bash -c "nohup caffeinate -u -i -d &"
 # ps aux -o ppid | grep caffeinate
 # launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
@@ -19,6 +17,10 @@ PMSETPID=0
 isAlreadyOn=0
 # mkdir ~/Mac\ Studio \Setup
 parentPath=/usr/local/bin/PlugNPlayMac
+
+# App not founded in the Application folder
+notFoundedApp=()
+
 # CPU Architecture (Intel: x86_64 --- Apple Silicon: arm64) 
 isAppleSilicon=false
 architecture=$(uname -m)
@@ -98,6 +100,7 @@ while true; do
             if ! open -a "$applicationName" 2>&1 | grep -q "Unable to find application named '$applicationName'"; then
                 echo "$date_string: Starting the APP: $applicationName"
             else
+                notFoundedApp+=("$applicationName")
                 echo "$date_string: Unable to find the APP: $applicationName"
             fi
         done
@@ -148,9 +151,15 @@ while true; do
 
         # Close each application in the list
         for applicationName in "${listAppToOpen[@]}"; do
-            (osascript -e "tell application \"$applicationName\" to quit" & wait) 2>/dev/null
-            date_string=$(date +"%d %b %Y - %H:%M")
-            echo "$date_string: $applicationName closed correctly"
+            if [[ "${notFoundedApp[*]}" == *"$applicationName"* ]]; then
+                notFoundedApp=("${notFoundedApp[@]/$applicationName}")
+                date_string=$(date +"%d %b %Y - %H:%M")
+                echo "$date_string: $applicationName not found"
+            else
+                (osascript -e "tell application \"$applicationName\" to quit" & wait) 2>/dev/null
+                date_string=$(date +"%d %b %Y - %H:%M")
+                echo "$date_string: $applicationName closed correctly"
+            fi
         done
 
         if $isAppleSilicon; then
@@ -194,7 +203,7 @@ while true; do
     fi
     
     # Costantly check if the display is in sleep mode.
-    while [ "$isSleep" == true ]; do
+    while [[ "$isSleep" == true && "$isDisplayFound" == true ]]; do
         # When the status change from sleep to awake, start a new caffeinate process
         if ! system_profiler SPDisplaysDataType | grep -q "Display Asleep: Yes"; then
             isSleep=false
