@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# test
+
 # bash -c "nohup caffeinate -u -i -d &"
 # ps aux -o ppid | grep caffeinate
 # launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
