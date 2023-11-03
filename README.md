@@ -1,7 +1,6 @@
 <div id="top"></div>
 <br/>
 <br/>
-chmod +x /Users/pietrobon/PlugNPlayMac/PNPMacInstaller.sh 
 
 <p align="center">
   <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/logo.png" width="100" height="100">
