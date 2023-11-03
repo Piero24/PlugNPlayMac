@@ -10,21 +10,20 @@
 </h1>
 <p align="center">
     <a href="https://github.com/Piero24/PlugNPlayMac/commits/master">
-    <img src="https://img.shields.io/github/last-commit/piero24/PlugNPlayMac">
+        <img src="https://img.shields.io/github/last-commit/piero24/PlugNPlayMac">
     </a>
     <a href="https://github.com/Piero24/PlugNPlayMac">
-    <img src="https://img.shields.io/badge/Maintained-yes-green.svg">
+        <img src="https://img.shields.io/badge/Maintained-yes-green.svg">
     </a>
     <a href="https://github.com/Piero24/twitch-stream-viewer/issues">
-    <img src="https://img.shields.io/github/issues/piero24/PlugNPlayMac">
+        <img src="https://img.shields.io/github/issues/piero24/PlugNPlayMac">
     </a>
     <a href="https://github.com/Piero24/PlugNPlayMac/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/piero24/PlugNPlayMac">
+        <img src="https://img.shields.io/github/license/piero24/PlugNPlayMac">
     </a>
-</p>
-<p align="center">
+    <br/>
     <a href="https://github.com/Piero24/PlugNPlayMac">
-    <img src="https://img.shields.io/badge/-MacOS-C0BFC0?logo=apple" alt="macos"/>
+        <img src="https://img.shields.io/badge/-MacOS-C0BFC0?logo=apple" alt="macos"/>
     </a>
 </p>
 <p align="center">
