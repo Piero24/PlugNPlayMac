@@ -23,6 +23,11 @@
     </a>
 </p>
 <p align="center">
+    <a href="https://github.com/Piero24/PlugNPlayMac">
+    <img src="https://img.shields.io/badge/-MacOS-C0BFC0?logo=apple" alt="macos"/>
+    </a>
+</p>
+<p align="center">
     A script to automate tasks when connect a device to your Mac
     <br/>
     <a href="https://github.com/Piero24/PlugNPlayMac/issues">Report Bug</a>
