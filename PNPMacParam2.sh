@@ -1,28 +1,35 @@
-# List of Display names
-# You can add as many as you want (separated by a space)
-# Ex: listDisplayNames=("Display Name" "Other Display Name")
-listDisplayNames=()
 # List of Wi-Fi names
-# You can add as many as you want (separated by a space)
-# Ex: listWifiNames=("Wifi Name" "Other Wifi Name") 
-listWifiNames=()
+listWifiNames=("Vodafone-A45682606" "Other Wifi Name")
+# List of Display names
+listDisplayNames=("LG IPS FULLHD" "Other Display Name")
 # List of Apps to open
-# You can add as many as you want (separated by a space)
-# Ex: listAppToOpen=("App Name" "Other App Name" "Other App Name")
-listAppToOpen=()
-# Max battery level when connected (suggest 77)
+listAppToOpen=("MonitorControl" "Elgato Stream Deck" "Other App Name")
+# Username of the account to use for sudo operation
+accountUser="Andrea Pietrobon"
+# Max battery level when connected
 batteryValue=77
+
+
+
+
+
+
+
+
+# security add-generic-password -s 'CLI Test'  -a 'armin' -w 'password123'
+
+
+
 
 ##########################################################################
 #
-### DON'T MODIFY THE CODE BELOW THIS LINE
+# DO NOT MODIFY THE CODE BELOW THIS LINE
 #
 ##########################################################################
 
 # Delay in seconds (default 60 seconds)
 seconds4Delay=60
 
-# main script
 isRunning=false
 # Caffeinate
 isCaffeinate=false
@@ -30,8 +37,7 @@ isCaffeinate=false
 isBclm=false
 # Apps
 areAppsOpen=false
-# Get the full name of the user
-accountUser=$(getUSR)
+
 # ID of the last active caffeinate process (0 at start of the script)
 PMSETPID=0
 # main directory
@@ -41,24 +47,10 @@ notFoundedApp=()
 
 
 getPW() {
-    # Take the password from Apple Keychain for operating the sudo operation
+    # Take the password from apple Keychain for operate the sudo operation
 
     local my_var
-    my_var=$(security find-generic-password -w -s "PlugNPlayMac" -a "$accountUser" 2>/dev/null)
-
-    if [[ -z $my_var ]]; then
-        date_string=$(date +"%b %d %Y - %H:%M")
-        echo "$date_string: The password doesn't exist yet"
-    fi
-
-    echo "$my_var"
-}
-
-getUSR() {
-    # Take the full name of the user
-
-    local my_var
-    my_var=$(id -F)
+    my_var=$(security find-generic-password -w -s "PlugNPlayMac" -a "$accountUser")
     echo "$my_var"
 }
 

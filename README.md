@@ -45,7 +45,7 @@
         <li>Launch <a href="https://www.elgato.com/us/en/s/downloads">Elgato Stream Deck.</a></li>
         <li>Start <a href="https://www.google.com/drive/download/">Google Drive</a> to access my files.</li>
         <li>Activate <a href="https://apps.apple.com/bg/app/amphetamine/id937984704?mt=12">Amphetamine</a> to prevent my Mac from going to sleep.</li>
-        <li>Run <a href="https://github.com/zackelia/bclm">bclm</a> to preserve battery health.</li>
+        <li>Run <a href="https://github.com/AppHouseKitchen/AlDente-Charge-Limiter">AlDente</a> to preserve battery health.</li>
     </ul>
     This process was very frustrating because I had to perform these tasks manually every time. Furthermore, each time I disconnected the monitor, I had to repeat these operations to close all the apps.
     <br/>
@@ -148,112 +148,53 @@
 
 
 1. Download the latest version of the script from <a href="https://github.com/Piero24/PlugNPlayMac/archive/refs/heads/main.zip">here</a> or clone the repo:
-    - ```sh
-        git clone https://github.com/Piero24/PlugNPlayMac.git
-        ```
-2. Connect the macbook to your wifi and monitor open the terminal and run the following commands:
-    - ```sh
-        ioreg -lw0 | grep 'IODisplayEDID' | sed '/[^<]*</s///' | xxd -p -r | strings -10
-        ```
-        It will return the name of the monitor seen by the Mac. In my case, it is `LG IPS FULLHD`.
-    - ```sh
-        /Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | awk '/ SSID:/ {print $2}'
-        ```
-        It will return the name of the wifi seen by the Mac. In my case, it is `Home-Wifi-Name`.
-
-3. Open the `PNPMacParam.sh` file and edit the following variables:
-    - ```sh
-        listWifiNames=("Wifi Name" "Other Wifi Name") 
-        ```
-    - ```sh
-        listDisplayNames=("Display Name" "Other Display Name")
-        ```
-    - ```sh
-        listAppToOpen=("App Name" "Other App Name")
-        ```
-    - ```sh
-        batteryValue=77
-        ```
-    - ```sh
-        accountUser="User Name"
-        ```
-    Where `listWifiNames` is the list of Wi-Fi networks and `listDisplayNames` are the list of monitors that trigger the script, `listAppToOpen` is the list of apps to open, `batteryValue` is the battery limit for `bclm` (must be less or equal to 100), and `accountUser` is the name of the user account on your Mac. So in my case, the values are:
     ```sh
-        listWifiNames=("Home-Wifi-Name")
-        listDisplayNames=("LG IPS FULLHD")
-        listAppToOpen=("MonitorControl" "Elgato Stream Deck")
-        batteryValue=77
-        accountUser="MY USERNAME"
+        git clone https://github.com/Piero24/PlugNPlayMac.git
     ```
-    Where `Home-Wifi-Name`and `LG IPS FULLHD` are the values founded before, `MonitorControl` and `Elgato Stream Deck` are the apps to open, `77` is the battery limit for `bclm`, and `MY USERNAME` is the name of the user account on my Mac. You can add as mach wifi, monitor, and app you want.
- 
 
-    **NOTE:** The `batteryValue` of <a href="https://github.com/zackelia/bclm">bclm</a> as mentioned it will be 3 point greather then the value setted in the script. So if you set `batteryValue=77` the battery limit will be 80.
-
-4. Add the password to keychain (this is needed for run persistence on bclm and perceive other task):
-    - ```sh
-        security add-generic-password -s 'PlugNPlayMac'  -a 'MY USERNAME' -w 'MY MACBOOK PASSWORD'
-        ```
-        `MY USERNAME` is the name of the user account on my Mac and `MY MACBOOK PASSWORD` is the password of my Mac. It will be stored on keychain with the name `PlugNPlayMac` and will be used by the script to run the task.
-        
-    Alternativelly you can add the password manually on keychain in this way:
-
-    - Open Keychain Access 
-        
-        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/KeychainAccessIcon.png" width="100" height="100">
-    
-    - Select Open Keychain Access 
-        
-        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/OpenedKey.png">
-    
-    - Add the new password
-        
-        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/NewPass.png">
-
-5. Open the terminal ad run the installer:
-    - ```sh
+2. Open the terminal and run the installer:
+    ```sh
         /Users/YOUR-NAME/Downloads/PlugNPlayMac-main/PNPMacInstaller.sh
-        ```
-        Where `YOUR-NAME` is the name of your user account on your Mac.
+    ```
+    > Where `YOUR-NAME` is the name of your user account on your Mac.
 
-6. Give the script the Full Disk Access (Mandatory for run it correctly):
+3. Give the script the Full Disk Access (Mandatory for run it correctly):
     - Open System Settings > Privacy & Security > Full Disk Access
-    - Click on the plus icon at the bottom of the list and digit your password
-        
-        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/BeforeFullDisk.png">
+    - Add `/bin/bash` and `/usr/local/bin/PlugNPlayMac/blcm`
 
-    - Press cmd + shift + G and digit /bin
-
-        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/bin.png">
-
-    - Select bash and click open
-    - Click again on the plus icon at the bottom of the list and digit your password
-    - Press cmd + shift + G and digit /usr/local/bin/PlugNPlayMac
-
-        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/bash.png">
-
-    - Select blcm and click open
 
     This is the final result:
+        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/AfterFullDisk.png">
 
-    <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/AfterFullDisk.png">
+4. Reboot your Mac
 
-7.  Test the script (the pass it will be required only the first time you run the script):
-    - Digit on therminal `/usr/local/bin/PlugNPlayMacPlugNPlayMac.sh` ad enter your password
-    - Control + c to exit 
+5. Open the terminal and run again the installer:
+    ```sh
+        /Users/YOUR-NAME/Downloads/PlugNPlayMac-main/PNPMacInstaller.sh
+    ```
+     > Where `YOUR-NAME` is the name of your user account on your Mac.
 
-8. Reboot your Mac
-
-9. Open terminal and digit `launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist`
-
-Done! Now the script will run automatically when you connect your Mac to the monitor and will close when you disconnect it. Additionally, you can use the shortcut to enable/disable various functions from the Mac's menu bar.
+***Done!*** Now the script will run automatically when you connect your Mac to the monitor and will close when you disconnect it. Additionally, you can use the shortcut to enable/disable various functions from the Mac's menu bar.
 
 👉  You can get the PlagNPlayMac shortcut from this <a href="https://www.icloud.com/shortcuts/f17d6b70db3a417799a35f1b0b684540">link</a> or you can create it manually.
 
-If you want to stop the automation of the script, you can run the following command on the terminal:
+<details>
+<summary>If you want to stop the automation of the script, you can run the following command on the terminal:</summary>
+
+<br/>
+
 ```sh
 launchctl unload /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
 ```
+<br/>
+
+for restart it:
+
+```sh
+launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
+```
+
+</details>
 
 <p align="right"><a href="#top">⇧</a></p>
 
@@ -264,12 +205,11 @@ launchctl unload /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
 <h2 id="roadmap"><br/><br/>🛫  Roadmap</h2>
 
 - [x] Switch from AlDente to bclm
-- [ ] Add bclm support for Apple Silicon (whenever I have access to a Mac with an Apple Silicon processor)
-- [ ] Bug Fixing
-- [ ] Switch to Swift
-- [ ] Reduce anutomate the procedure for the installation
+- [x] Bug Fixing
+- [x] Reduce the procedure for the installation
 - [ ] Add AutoUpdate
-
+- [ ] Add bclm support for Apple Silicon (whenever I have access to a Mac with an Apple Silicon processor)
+- [ ] Switch to Swift
 
 <p>
     See the 
@@ -329,7 +269,7 @@ launchctl unload /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
 <p>
     Here you can find all the information regarding the fixes and implementations that took place in the various program reviews.
 </p>
-<a href="https://github.com/Piero24/PlugNPlayMac/blob/main/CHANGELOG.md"><strong>Explore the changelog docs</strong></a>
+<a href="https://github.com/Piero24/PlugNPlayMac/releases"><strong>Explore the changelog docs</strong></a>
 <br/>
 
 <p align="right"><a href="#top">⇧</a></p>
