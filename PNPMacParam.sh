@@ -30,8 +30,7 @@ isCaffeinate=false
 isBclm=false
 # Apps
 areAppsOpen=false
-# Get the full name of the user
-accountUser=$(getUSR)
+
 # ID of the last active caffeinate process (0 at start of the script)
 PMSETPID=0
 # main directory
@@ -39,6 +38,17 @@ parentPath=/usr/local/bin/PlugNPlayMac
 # App not founded in the Application folder
 notFoundedApp=()
 
+
+getUSR() {
+    # Take the full name of the user
+
+    local my_var
+    my_var=$(id -F)
+    echo "$my_var"
+}
+
+# Get the full name of the user
+accountUser=$(getUSR)
 
 getPW() {
     # Take the password from Apple Keychain for operating the sudo operation
@@ -51,14 +61,6 @@ getPW() {
         echo "$date_string: The password doesn't exist yet"
     fi
 
-    echo "$my_var"
-}
-
-getUSR() {
-    # Take the full name of the user
-
-    local my_var
-    my_var=$(id -F)
     echo "$my_var"
 }
 
@@ -78,4 +80,17 @@ detect_cpu_architecture() {
     fi
 
     echo "$my_var"
+}
+
+log_error() {
+    local msg_type="$1"
+    local isAppleSilicon="$2"
+    local msg_text="$3"
+    local date_string=$(date +"%b %d %Y - %H:%M")
+
+    if [ -n "$isAppleSilicon" ]; then
+        echo "$date_string: (I$msg_type): $msg_text"
+    else
+        echo "$date_string: (A$msg_type): $msg_text"
+    fi
 }

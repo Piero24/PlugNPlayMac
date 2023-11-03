@@ -1,7 +1,7 @@
 <div id="top"></div>
 <br/>
 <br/>
-
+chmod +x /Users/pietrobon/PlugNPlayMac/PNPMacInstaller.sh 
 
 <p align="center">
   <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/logo.png" width="100" height="100">
@@ -142,7 +142,7 @@
 
 <h2 id="how-to-start"><br/>⚙️  How to Start</h2>
 <p>
-    Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services.
+    Here you can find a step by step guide to install and run the script. At the end of this section you can find a link to a <strong><a href="https://github.com/Piero24/PlugNPlayMac/blob/main/markdown/QandA.md">Q&A</a></strong> page that provide some extra information like <strong>change the password</strong>, how to <strong>add more displays</strong>, <strong>download the shortcut</strong>, etc.
 </p>
 <br/>
 
@@ -154,47 +154,25 @@
 
 2. Open the terminal and run the installer:
     ```sh
-        /Users/YOUR-NAME/Downloads/PlugNPlayMac-main/PNPMacInstaller.sh
+        ./PlugNPlayMac/PNPMacInstaller.sh
     ```
-    > Where `YOUR-NAME` is the name of your user account on your Mac.
 
-3. Give the script the Full Disk Access (Mandatory for run it correctly):
-    - Open System Settings > Privacy & Security > Full Disk Access
+3. Give the script the Full Disk Access <strong>(Mandatory for run it correctly)</strong>:
+    - Open `System Settings > Privacy & Security > Full Disk Access`
     - Add `/bin/bash` and `/usr/local/bin/PlugNPlayMac/blcm`
 
-
-    This is the final result:
-        <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/AfterFullDisk.png">
-
+    > **A step by step guide can be found <a href="https://github.com/Piero24/PlugNPlayMac/blob/main/markdown/fullDiskAccess.md">here</a>.**
 4. Reboot your Mac
 
 5. Open the terminal and run again the installer:
     ```sh
-        /Users/YOUR-NAME/Downloads/PlugNPlayMac-main/PNPMacInstaller.sh
+        ./PlugNPlayMac/PNPMacInstaller.sh
     ```
-     > Where `YOUR-NAME` is the name of your user account on your Mac.
 
-***Done!*** Now the script will run automatically when you connect your Mac to the monitor and will close when you disconnect it. Additionally, you can use the shortcut to enable/disable various functions from the Mac's menu bar.
+**Done!** Now the script will run automatically when you connect your Mac to the monitor and will close when you disconnect it. Additionally, you can use the <strong>shortcut</strong> to enable/disable various functions from the Mac's menu bar.
 
-👉  You can get the PlagNPlayMac shortcut from this <a href="https://www.icloud.com/shortcuts/f17d6b70db3a417799a35f1b0b684540">link</a> or you can create it manually.
+### 👉 Here you can find the <strong><a href="https://github.com/Piero24/PlugNPlayMac/blob/main/markdown/QandA.md">Q&A</a></strong> page with some extra information.
 
-<details>
-<summary>If you want to stop the automation of the script, you can run the following command on the terminal:</summary>
-
-<br/>
-
-```sh
-launchctl unload /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
-```
-<br/>
-
-for restart it:
-
-```sh
-launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
-```
-
-</details>
 
 <p align="right"><a href="#top">⇧</a></p>
 
@@ -207,6 +185,7 @@ launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
 - [x] Switch from AlDente to bclm
 - [x] Bug Fixing
 - [x] Reduce the procedure for the installation
+- [ ] Add automation based on time for the bclm
 - [ ] Add AutoUpdate
 - [ ] Add bclm support for Apple Silicon (whenever I have access to a Mac with an Apple Silicon processor)
 - [ ] Switch to Swift

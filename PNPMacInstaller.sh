@@ -72,7 +72,7 @@ if [ ! -e "/usr/local/bin/PlugNPlayMac/bclm" ]; then
     # echo "Selected Display: $selectedDisplay"
 
     newVariable="listDisplayNames=(${selectedDisplay} )"
-    sed -i '' -e "/^listDisplayNames=/s/.*/$newVariable/" ./PNPMacParam.sh
+    sed -i '' -e "/^listDisplayNames=/s/.*/$newVariable/" ./PlugNPlayMac/PNPMacParam.sh
 
     clear
 
@@ -119,7 +119,7 @@ if [ ! -e "/usr/local/bin/PlugNPlayMac/bclm" ]; then
     # sed -i '' -e "/^listWifiNames=/s/.*/$newVariable/" ./PNPMacParam.sh
 
     newVariable="listWifiNames=(${selectedWifi} )"
-    sed -i '' -e "/^listWifiNames=/s/.*/$newVariable/" ./PNPMacParam.sh
+    sed -i '' -e "/^listWifiNames=/s/.*/$newVariable/" ./PlugNPlayMac/PNPMacParam.sh
 
     clear
 
@@ -145,7 +145,7 @@ if [ ! -e "/usr/local/bin/PlugNPlayMac/bclm" ]; then
         fi
     done
 
-    sed -i '' -e "/^listAppToOpen=/s/.*/$selectedApp/" ./PNPMacParam.sh
+    sed -i '' -e "/^listAppToOpen=/s/.*/$selectedApp/" ./PlugNPlayMac/PNPMacParam.sh
 
     clear
 
@@ -176,7 +176,7 @@ if [ ! -e "/usr/local/bin/PlugNPlayMac/bclm" ]; then
     # echo "Selected Battery Value: $selectedBatteryValue"
 
     newVariable="batteryValue=${selectedBatteryValue}"
-    sed -i '' -e "/^batteryValue=/s/.*/$newVariable/" ./PNPMacParam.sh
+    sed -i '' -e "/^batteryValue=/s/.*/$newVariable/" ./PlugNPlayMac/PNPMacParam.sh
 
     #
     # Start coping the files
@@ -191,19 +191,19 @@ if [ ! -e "/usr/local/bin/PlugNPlayMac/bclm" ]; then
     fi
 
     # Move files to /usr/local/bin/PlugNPlayMac
-    sudo mv PlugNPlayMac.sh /usr/local/bin/PlugNPlayMac
+    sudo mv ./PlugNPlayMac/PlugNPlayMac.sh /usr/local/bin/PlugNPlayMac
     if [ $? -ne 0 ]; then
         display_error "Error moving PlugNPlayMac.sh"
         exit 1
     fi
 
-    sudo mv PNPMacParam.sh /usr/local/bin/PlugNPlayMac
+    sudo mv ./PlugNPlayMac/PNPMacParam.sh /usr/local/bin/PlugNPlayMac
     if [ $? -ne 0 ]; then
         display_error "Error moving PNPMacParam.sh"
         exit 1
     fi
 
-    sudo mv bclm /usr/local/bin/PlugNPlayMac
+    sudo mv ./PlugNPlayMac/bclm /usr/local/bin/PlugNPlayMac
     if [ $? -ne 0 ]; then
         display_error "Error moving bclm"
         exit 1
@@ -232,14 +232,14 @@ if [ ! -e "/usr/local/bin/PlugNPlayMac/com.launch.plug.and.play.mac.plist" ]; th
     fi
 
     # Copy the plist file to /Library/LaunchAgents
-    sudo cp com.launch.plug.and.play.mac.plist /Library/LaunchAgents
+    sudo cp ./PlugNPlayMac/com.launch.plug.and.play.mac.plist /Library/LaunchAgents
     if [ $? -ne 0 ]; then
         display_error "Error copying com.launch.plug.and.play.mac.plist"
         exit 1
     fi
 
     # Move the plist file to /usr/local/bin/PlugNPlayMac
-    sudo mv com.launch.plug.and.play.mac.plist /usr/local/bin/PlugNPlayMac
+    sudo mv ./PlugNPlayMac/com.launch.plug.and.play.mac.plist /usr/local/bin/PlugNPlayMac
     if [ $? -ne 0 ]; then
         display_error "Error moving com.launch.plug.and.play.mac.plist"
         exit 1
@@ -259,20 +259,20 @@ if [ ! -e "/usr/local/bin/PlugNPlayMac/com.launch.plug.and.play.mac.plist" ]; th
     \n"
 
 else
+    
+    # # Define the path to the shell script
+    # shell_script="/usr/local/bin/PlugNPlayMac/PlugNPlayMac.sh"
 
-  # Define the path to the shell script
-    shell_script="/usr/local/bin/PlugNPlayMac/PlugNPlayMac.sh"
+    # # Check if the script exists and is executable
+    # if [ -x "$shell_script" ]; then
+    #     # Start the shell script
+    #     bash "$shell_script"
+    # else
+    #     display_error "The shell script '$shell_script' does not exist or is not executable."
+    #     exit 1
+    # fi
 
-    # Check if the script exists and is executable
-    if [ -x "$shell_script" ]; then
-        # Start the shell script
-        bash "$shell_script"
-    else
-        display_error "The shell script '$shell_script' does not exist or is not executable."
-        exit 1
-    fi
-
-    pkill caffeinate
+    # pkill caffeinate
     launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
 
     echo "Done."

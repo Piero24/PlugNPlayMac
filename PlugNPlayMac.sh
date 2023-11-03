@@ -5,16 +5,14 @@
 # launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
 # launchctl unload /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
 
-# source /usr/local/bin/PlugNPlayMac/PNPMacParam.sh
-source /Users/pietrobon/Documents/Developer/GitHub/PlugNPlayMac/personalParam.sh
+source /usr/local/bin/PlugNPlayMac/PNPMacParam.sh
 
 # Password for usce bclm
 myPassword=$(getPW)
 # CPU Architecture (Intel: x86_64 --- Apple Silicon: arm64) 
 isAppleSilicon=$(detect_cpu_architecture)
 
-date_string=$(date +"%b %d %Y - %H:%M")
-echo "$date_string: Start the PlugNPlayMac script"
+log_error "" "$isAppleSilicon" "Start the PlugNPlayMac script"
 
 while true; do
 
@@ -79,8 +77,7 @@ while true; do
                 # save the caffeinate process ID
                 PMSETPID=$!
 
-                date_string=$(date +"%b %d %Y - %H:%M")
-                echo "$date_string: (S1) Starting caffeinate with ID: $PMSETPID"
+                log_error "S1" "$isAppleSilicon" "Starting caffeinate with ID: $PMSETPID"
 
                 isRunning=true
                 isCaffeinate=true
@@ -88,12 +85,11 @@ while true; do
 
             # Open each application in the list
             for applicationName in "${listAppToOpen[@]}"; do
-                date_string=$(date +"%b %d %Y - %H:%M")
                 if ! open -a "$applicationName" 2>&1 | grep -q "Unable to find application named '$applicationName'"; then
-                    echo "$date_string: (S1) Starting the APP: $applicationName"
+                    log_error "S2" "$isAppleSilicon" "Starting the APP: $applicationName"
                 else
                     notFoundedApp+=("$applicationName")
-                    echo "$date_string: (E1) Unable to find the APP: $applicationName"
+                    log_error "E2" "$isAppleSilicon" "Unable to find the APP: $applicationName"
                 fi
             done
 
@@ -104,34 +100,30 @@ while true; do
                 # At this moment the battery doesn't set the new charge limit
                 # on Apple Silicon. This is because the BCLM script doesn't 
                 # work on Apple Silicon. 
-                date_string=$(date +"%b %d %Y - %H:%M")
-                echo "$date_string: (E1) Not done yet for Apple Silicon"
+                log_error "E3" "$isAppleSilicon" "Not done yet for Apple Silicon"
 
             else
 
-                date_string=$(date +"%b %d %Y - %H:%M")
-                
                 # More info on BCLM here: https://github.com/zackelia/bclm
                 # Overwrite battery value and set the new value for the battery limit
                 chmod +x "$parentPath/bclm"
-                writtenResult=$(echo $myPassword | sudo -S "$parentPath/bclm" write "$batteryValue")
+                # Prompt for the password and provide it to sudo without displaying it
+                writtenResult=$(echo "$myPassword" | sudo -S "$parentPath/bclm" write "$batteryValue" 2>&1)
 
                 if [ $? -eq 0 ]; then
-                    echo "$date_string: (S1) Value $batteryValue written successfully"
+                    log_error "S4" "$isAppleSilicon" "Value $batteryValue written successfully"
                 fi
 
-                date_string=$(date +"%b %d %Y - %H:%M")
                 # Apply the persistence for the new battery limit
                 error_message=$(echo "$myPassword" | sudo -S "$parentPath/bclm" persist 2>&1)
 
                 if [ $? -eq 0 ]; then
-                    echo ""
-                    echo "$date_string: (S1) Persistence has bean activte"
+                    log_error "S5" "$isAppleSilicon" "Persistence has bean activte"
                 fi
 
                 # Read the current battery value
                 batteryResult="$("$parentPath/bclm" read)"
-                echo "$date_string: (S1) Result of bclm read: $batteryResult"
+                log_error "S6" "$isAppleSilicon" "Result of bclm read: $batteryResult"
             fi
 
             if [ "$batteryResult" = "$batteryValue" ]; then
@@ -148,11 +140,10 @@ while true; do
 
                 # Check if any instances were killed
                 if [ $? -eq 0 ]; then
-                    echo "$date_string: (E1) All caffeinate process killed successfully"
+                    log_error "S7" "$isAppleSilicon" "All caffeinate process killed successfully"
                 else
-                    echo "$date_string: (E1) No caffeinate process found to kill"
+                    log_error "E7" "$isAppleSilicon" "No caffeinate process found to kill"
                 fi
-
                 isCaffeinate=false
             fi
 
@@ -167,9 +158,7 @@ while true; do
                     # save the caffeinate process ID
                     PMSETPID=$!
 
-                    date_string=$(date +"%b %d %Y - %H:%M")
-                    echo "$date_string: (S2) Starting caffeinate with ID: $PMSETPID"
-
+                    log_error "S8" "$isAppleSilicon" "Starting caffeinate with ID: $PMSETPID"
                     isCaffeinate=true
                 fi
             fi
@@ -181,13 +170,11 @@ while true; do
             # Kill all the caffeinate process
             pkill caffeinate
 
-            date_string=$(date +"%b %d %Y - %H:%M")
-
             # Check if any instances were killed
             if [ $? -eq 0 ]; then
-                echo "$date_string: (E2) All caffeinate process killed successfully"
+                log_error "S9" "$isAppleSilicon" "All caffeinate process killed successfully"
             else
-                echo "$date_string: (E2) No caffeinate process found to kill"
+                log_error "E9" "$isAppleSilicon" "No caffeinate process found to kill"
             fi
 
             isRunning=false
@@ -197,12 +184,11 @@ while true; do
             for applicationName in "${listAppToOpen[@]}"; do
                 if [[ "${notFoundedApp[*]}" == *"$applicationName"* ]]; then
                     notFoundedApp=("${notFoundedApp[@]/$applicationName}")
-                    date_string=$(date +"%b %d %Y - %H:%M")
                     echo "$date_string: $applicationName (E1) not found"
+                    log_error "E10" "$isAppleSilicon" "$applicationName not found"
                 else
                     (osascript -e "tell application \"$applicationName\" to quit" & wait) 2>/dev/null
-                    date_string=$(date +"%b %d %Y - %H:%M")
-                    echo "$date_string: $applicationName (E1) closed correctly"
+                    log_error "S10" "$isAppleSilicon" "$applicationName closed correctly"
                 fi
             done
 
@@ -210,8 +196,7 @@ while true; do
             batteryResult=0
 
             if $isAppleSilicon; then
-                date_string=$(date +"%b %d %Y - %H:%M")
-                echo "$date_string: (E2) Not done yet for Apple Silicon"
+                log_error "E11" "$isAppleSilicon" "Not done yet for Apple Silicon"
             else
 
                 # Remove persistence on the battery for set the default value
@@ -219,7 +204,7 @@ while true; do
                 date_string=$(date +"%b %d %Y - %H:%M")
 
                 if [ $? -eq 0 ]; then
-                    echo "$date_string: (E1) Persistence has bean disabled"
+                    log_error "S12" "$isAppleSilicon" "Persistence has bean disabled"
                 fi
 
                 # Write the original value
@@ -228,16 +213,15 @@ while true; do
                 rmFile=$(echo $myPassword | sudo -S rm /Library/LaunchDaemons/com.launch.plug.and.play.mac.bclm.plist)
 
                 batteryResult="$("$parentPath/bclm" read)"
-                echo "$date_string: (S2) Result of bclm read: $batteryResult"
+                log_error "S13" "$isAppleSilicon" "Result of bclm read: $batteryResult"
             fi
 
             if [ "$batteryResult" = "100" ]; then
                 isBclm=false
             fi
-
         fi
     fi
-
+    
     sleep $seconds4Delay
 
 done
