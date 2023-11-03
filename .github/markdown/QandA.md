@@ -33,7 +33,7 @@ launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
 <summary>3) Accidentally I have insert the wrong password how can I change it?</summary>
 <br/>
 
-> If you have insert the wrong password and you want to  <a href="https://github.com/Piero24/PlugNPlayMac/blob/main/markdown/alternativePasss.md">change it</a>
+> If you have insert the wrong password and you want to  <a href="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/markdown/alternativePasss.md">change it</a>
 
 <hr>
 <br/>
@@ -43,7 +43,7 @@ launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
 <summary>4) How can I add more displays to the script ? I need to run the script when I am home and when I am at work</summary>
 <br/>
 
-> For add more displays to the script <a href="https://github.com/Piero24/PlugNPlayMac/blob/main/markdown/alternativePasss.md">here</a>
+> For add more displays to the script <a href="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/markdown/alternativePasss.md">here</a>
 
 <hr>
 <br/>

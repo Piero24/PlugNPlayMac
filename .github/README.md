@@ -3,7 +3,7 @@
 <br/>
 
 <p align="center">
-  <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/logo.png" width="100" height="100">
+  <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/image/logo.png" width="100" height="100">
 </p>
 <h1 align="center">
     <a href="https://github.com/Piero24/PlugNPlayMac">PlugNPlayMac</a>
@@ -57,7 +57,7 @@
     With this script, the apps will open automatically when I connect my home monitor to the MacBook and will close when I disconnect the monitor. Additionally, it recognizes the Wi-Fi network, so it only opens the apps when I connect to a specific home monitor. This ensures that nothing opens if I connect to an external monitor at the office with a similar name.
     <br/>
     <br/>
-    <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/Cover.png">
+    <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/image/Cover.png">
     <br/>
     <br/>
     In addition to this, I have also prepared a shortcut (for the <a href="https://support.apple.com/en-gb/guide/shortcuts-mac/apdf22b0444c/mac">Apple Shortcut app</a>) to enable/disable various functions from the Mac's menu bar. This allows me to control the functions even when I am not at home. While there are apps that perform similar functions, I wanted to minimize the number of applications running constantly in the background. Therefore, I chose to write a script to accomplish all of this.
@@ -146,7 +146,7 @@
 
 <h2 id="how-to-start"><br/>⚙️  How to Start</h2>
 <p>
-    Here you can find a step by step guide to install and run the script. At the end of this section you can find a link to a <strong><a href="https://github.com/Piero24/PlugNPlayMac/blob/main/markdown/QandA.md">Q&A</a></strong> page that provide some extra information like <strong>change the password</strong>, how to <strong>add more displays</strong>, <strong>download the shortcut</strong>, etc.
+    Here you can find a step by step guide to install and run the script. At the end of this section you can find a link to a <strong><a href="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/markdown/QandA.md">Q&A</a></strong> page that provide some extra information like <strong>change the password</strong>, how to <strong>add more displays</strong>, <strong>download the shortcut</strong>, etc.
 </p>
 <br/>
 
@@ -165,7 +165,7 @@
     - Open `System Settings > Privacy & Security > Full Disk Access`
     - Add `/bin/bash` and `/usr/local/bin/PlugNPlayMac/blcm`
 
-    > **A step by step guide can be found <a href="https://github.com/Piero24/PlugNPlayMac/blob/main/markdown/fullDiskAccess.md">here</a>.**
+    > **A step by step guide can be found <a href="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/markdown/fullDiskAccess.md">here</a>.**
 4. Reboot your Mac
 
 5. Open the terminal and run again the installer:
@@ -175,7 +175,7 @@
 
 **Done!** Now the script will run automatically when you connect your Mac to the monitor and will close when you disconnect it. Additionally, you can use the <strong>shortcut</strong> to enable/disable various functions from the Mac's menu bar.
 
-### 👉 Here you can find the <strong><a href="https://github.com/Piero24/PlugNPlayMac/blob/main/markdown/QandA.md">Q&A</a></strong> page with some extra information.
+### 👉 Here you can find the <strong><a href="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/markdown/QandA.md">Q&A</a></strong> page with some extra information.
 
 
 <p align="right"><a href="#top">⇧</a></p>
@@ -274,7 +274,7 @@ in the Software without restriction.</i>
 <br/>
 <i>The GNU General Public License is a free, copyleft license for software and other kinds of works.</i>
 <br/>
-<a href="https://github.com/Piero24/PlugNPlayMac/blob/main/LICENSE"><strong>License Documentation »</strong></a>
+<a href="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/LICENSE"><strong>License Documentation »</strong></a>
 <br/>
 <br/>
 

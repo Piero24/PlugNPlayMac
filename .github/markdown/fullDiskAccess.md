@@ -6,17 +6,17 @@ For give the Full Disk Access (Mandatory for run it correctly) to the script you
 
 - Click on the ` + ` icon at the bottom of the list and digit your password
     
-    <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/BeforeFullDisk.png">
+    <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/image/BeforeFullDisk.png">
 
 - Press `cmd + shift + G ` and digit `/bin`
 
-    <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/bin.png">
+    <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/image/bin.png">
 
 - Select `bash` and click open
 - Click again on the ` + ` icon at the bottom of the list and digit your password
 - Press `cmd + shift + G ` and digit `/usr/local/bin/PlugNPlayMac`
 
-    <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/bash.png">
+    <img src="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/image/bash.png">
 
 - Select `blcm` and click open
 
@@ -31,4 +31,4 @@ For give the Full Disk Access (Mandatory for run it correctly) to the script you
 ### This is the final result:
 
 <br/>
-<img src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/AfterFullDisk.png">
+<img src="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/image/AfterFullDisk.png">

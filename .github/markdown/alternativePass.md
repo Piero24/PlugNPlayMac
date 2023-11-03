@@ -4,9 +4,9 @@
 
 
 If you have insert the wrong password and you want to change it, you can do it in this way:
-- Open the **Keychain Access** App <img align="center" src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/KeychainAccessIcon.png" width="100" height="100">
+- Open the **Keychain Access** App <img align="center" src="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/image/KeychainAccessIcon.png" width="100" height="100">
 
-- Select Open Keychain Access <img align="center" src="https://github.com/Piero24/PlugNPlayMac/blob/main/image/OpenedKey.png">
+- Select Open Keychain Access <img align="center" src="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/image/OpenedKey.png">
 
 - Search the name **PlugNPlayMac** on the search bar
 - Double click on the name **PlugNPlayMac**
