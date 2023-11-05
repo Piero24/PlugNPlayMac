@@ -65,7 +65,6 @@
     I have also opted to replace <a href="https://apps.apple.com/bg/app/amphetamine/id937984704?mt=12">Amphetamine</a> with <a href="https://ss64.com/osx/caffeinate.html">Caffeinate</a>, which is pre-installed on every Mac. Additionally, I replaced <a href="https://github.com/AppHouseKitchen/AlDente-Charge-Limiter">AlDente</a> with <a href="https://github.com/zackelia/bclm">bclm</a>, which has fewer features but is more convenient for my purposes.
 </p>
 
-
 <!--
 <h2 id="made-in"><br/>🛠  Built in</h2>
 <p>
@@ -76,7 +75,6 @@
 
 <p align="right"><a href="#top">⇧</a></p>
 -->
-
 
 <h2 id="index"><br/>📋  Index</h2>
 <ul>
