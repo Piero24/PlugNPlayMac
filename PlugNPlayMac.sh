@@ -5,6 +5,12 @@
 # launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
 # launchctl unload /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
 
+
+# https://fig.io
+# https://ohmyz.sh
+# https://stackoverflow.com/questions/27379507/creating-and-writing-into-plist-with-terminal-or-bash-script
+
+
 source /usr/local/bin/PlugNPlayMac/PNPMacParam.sh
 
 # Password for usce bclm
@@ -21,20 +27,41 @@ while true; do
     isWifiFound=false
     isSleep=false
 
-    # Return the name of the different display connected to the mac
-    # If the built in display is connected but close it doesn't appear
-    commandDetectDisplay="ioreg -lw0 | grep 'IODisplayEDID' | sed '/[^<]*</s///' | xxd -p -r | strings -10"
-    currentDisplay=$(eval "$commandDetectDisplay")
-    # echo "$currentDisplay"
-
     # Return the name of the wifi connected to the mac
     commandDetectWifi="/Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | awk '/ SSID:/ {print $2}'"
     currentWifi=$(eval "$commandDetectWifi")
     # echo "$currentWifi"
 
-    commandSleepStatus='echo $(ioreg -n IODisplayWrangler | grep -i IOPowerManagement | perl -pe '\''s/^.*DevicePowerState"=([0-9]+).*$/\1/'\'')/4 | bc'
-    sleepStatus=$(eval "$commandSleepStatus")
-    # echo "$sleepStatus"
+    if $isAppleSilicon; then
+
+        # Get the complete output of system_profiler SPDisplaysDataType
+        display_info=$(system_profiler SPDisplaysDataType)
+        # Extract display names
+        display_names_and_resolutions=$(echo "$display_info" | awk '/Displays:/{p=1; next} p && /^$/{p=0} p && !/^$/ && $1 != "Display" {if ($1 == "Display") name=$2; else if ($1 == "Resolution:") print name, prev_line} {prev_line = $0}')
+        # Use sed to remove trailing colons from names, "Display Type:" and leading spaces in lines
+        currentDisplay=$(echo "$display_names_and_resolutions" | sed -e 's/:$//' -e 's/Display Type: //' -e 's/^[[:space:]]*//')
+        # Print display names and their respective resolutions
+        # echo "$currentDisplay"
+
+        # Get the complete output of system_profiler SPDisplaysDataType
+        display_info=$(system_profiler SPDisplaysDataType)
+
+        # Count the occurrences of "Display Asleep: Yes" and "Display Asleep: No"
+        count_asleep=$(echo "$display_info" | grep -c "Display Asleep: Yes")
+        count_awake=$(echo "$display_info" | grep -c "Display Asleep: No")
+
+    else
+        # Return the name of the different display connected to the mac
+        # If the built in display is connected but close it doesn't appear
+        commandDetectDisplay="ioreg -lw0 | grep 'IODisplayEDID' | sed '/[^<]*</s///' | xxd -p -r | strings -10"
+        currentDisplay=$(eval "$commandDetectDisplay")
+        # echo "$currentDisplay"
+
+        commandSleepStatus='echo $(ioreg -n IODisplayWrangler | grep -i IOPowerManagement | perl -pe '\''s/^.*DevicePowerState"=([0-9]+).*$/\1/'\'')/4 | bc'
+        sleepStatus=$(eval "$commandSleepStatus")
+        # echo "$sleepStatus"
+
+    fi
 
     # Set isDisplayFound to true if there is a match on the display
     for displayName in "${listDisplayNames[@]}"; do
@@ -53,7 +80,10 @@ while true; do
     done
 
     # Set isRunning to false if the sleep is active
-    if [ "$sleepStatus" -eq 0 ]; then
+    if [[ "$sleepStatus" -eq 0 && "$isAppleSilicon" == false ]]; then
+        isSleep=true
+
+    elif [[ $count_asleep -gt 0 && $count_awake -eq 0 && "$isAppleSilicon" == true ]]; then
         isSleep=true
     fi
 
@@ -70,6 +100,7 @@ while true; do
             # Needed for prevent the mac start caffeinate when the user is not using the mac
             if [ "$idle_time_minutes" -lt 10 ]; then
 
+                pkill caffeinate
                 # Launch a nohup caffeinate for run caffeinate in background
                 # This prevent the mac to sleep
                 # "man caffeinate" for more information
@@ -96,17 +127,17 @@ while true; do
             areAppsOpen=true
             batteryResult=0
 
-            if $isAppleSilicon; then
-                # At this moment the battery doesn't set the new charge limit
-                # on Apple Silicon. This is because the BCLM script doesn't 
-                # work on Apple Silicon. 
-                log_error "E3" "$isAppleSilicon" "Not done yet for Apple Silicon"
-
-            else
+            if [ $isBclm == false ]; then
 
                 # More info on BCLM here: https://github.com/zackelia/bclm
                 # Overwrite battery value and set the new value for the battery limit
                 chmod +x "$parentPath/bclm"
+
+                if $isAppleSilicon; then
+                    #FOR APPLE SILICON THE VALUE MUST BE 80 or 100
+                    batteryValue=80
+                fi
+
                 # Prompt for the password and provide it to sudo without displaying it
                 writtenResult=$(echo "$myPassword" | sudo -S "$parentPath/bclm" write "$batteryValue" 2>&1)
 
@@ -124,10 +155,10 @@ while true; do
                 # Read the current battery value
                 batteryResult="$("$parentPath/bclm" read)"
                 log_error "S6" "$isAppleSilicon" "Result of bclm read: $batteryResult"
-            fi
 
-            if [ "$batteryResult" = "$batteryValue" ]; then
-                isBclm=true
+                if [ "$batteryResult" = "$batteryValue" ]; then
+                    isBclm=true
+                fi
             fi
 
         elif [[ $isRunning == true && $isSleep == true ]]; then
@@ -154,6 +185,7 @@ while true; do
                 # Needed for prevent the mac start caffeinate when the user is not using the mac
                 if [ "$idle_time_minutes" -lt 10 ]; then
 
+                    pkill caffeinate
                     (nohup caffeinate -u -i -d & wait 2>/dev/null) &
                     # save the caffeinate process ID
                     PMSETPID=$!
@@ -195,11 +227,9 @@ while true; do
             areAppsOpen=false
             batteryResult=0
 
-            if $isAppleSilicon; then
-                log_error "E11" "$isAppleSilicon" "Not done yet for Apple Silicon"
-            else
+            if [ $isBclm == true ]; then
 
-                # Remove persistence on the battery for set the default value
+                 # Remove persistence on the battery for set the default value
                 error_message=$(echo $myPassword | sudo -S "$parentPath/bclm" unpersist 2>&1)
                 date_string=$(date +"%b %d %Y - %H:%M")
 
@@ -210,14 +240,14 @@ while true; do
                 # Write the original value
                 writtenResult=$(echo $myPassword | sudo -S "$parentPath/bclm" write 100)
                 # Remove the plist file of BCLM for prevent problem with the default value
-                rmFile=$(echo $myPassword | sudo -S rm /Library/LaunchDaemons/com.launch.plug.and.play.mac.bclm.plist)
+                rmFile=$(echo $myPassword | sudo -S rm /Library/LaunchDaemons/com.zackelia.bclm.plist)
 
                 batteryResult="$("$parentPath/bclm" read)"
                 log_error "S13" "$isAppleSilicon" "Result of bclm read: $batteryResult"
-            fi
 
-            if [ "$batteryResult" = "100" ]; then
-                isBclm=false
+                if [ "$batteryResult" = "100" ]; then
+                    isBclm=false
+                fi
             fi
         fi
     fi

@@ -126,7 +126,7 @@
     There are no specific dependencies or requirements to be met for using this script.
     The only thing required is to have a Mac with <strong>macOS Ventura</strong> (or higher) installed. Additional requirements may apply to <a href="https://github.com/zackelia/bclm">bclm</a>, so please check the original repository before proceeding with the installation.
     <p>
-        <strong>NOTE: </strong> This script has been tested only on <strong>MacBook Pro (13-inch, 2018, Four Thunderbolt 3 ports)</strong> with <strong>macOS Ventura 13.5.1</strong> and <strong>macOS Sonoma 14.0</strong>.
+        <strong>NOTE: </strong> This script has been tested only on <strong>MacBook Pro (13-inch, 2018, Four Thunderbolt 3 ports)</strong> with <strong>macOS Ventura 13.5.1</strong> and <strong>macOS Sonoma 14.0</strong> and on a <strong>MacBook Pro (14-inch, 2023, with M3 Pro)</strong> with <strong>macOS Sonoma 14.0</strong> (or higher).
     </p>
     <br/>
     <p align="center">
@@ -134,7 +134,7 @@
             ⚠️ <strong>ATTENTION</strong> ⚠️
         </h3>
         <p  align="center">
-            <strong>Currently, bclm works exclusively on Macs with Intel processors and not on Macs with Apple Silicon processors (M1, M2, etc)</strong>. The rest of the functions work without any issues, so Caffeinate and the apps will start as expected, but bclm won't run. As soon as I have access to a Mac with an Apple Silicon processor, I will update the code to support these processors. Otherwise, if anyone would like to contribute, they are welcome to do so.
+            <strong>Currently, bclm can only have the value set to 80 or 100 on Apple Silicon as shown <a href="https://github.com/zackelia/bclm">here</a></strong>. It can be set on any value from 50 to 100 on Intel Macs.
         </p>
     </p>
 </p>
@@ -163,6 +163,7 @@
     - Add `/bin/bash` and `/usr/local/bin/PlugNPlayMac/blcm`
 
     > **A step by step guide can be found <a href="https://github.com/Piero24/PlugNPlayMac/blob/main/.github/markdown/fullDiskAccess.md">here</a>.**
+
 4. Reboot your Mac
 
 5. Open the terminal and run again the installer:
@@ -186,9 +187,9 @@
 - [x] Switch from AlDente to bclm
 - [x] Bug Fixing
 - [x] Reduce the procedure for the installation
+- [x] Add bclm support for Apple Silicon
 - [ ] Add automation based on time for the bclm
 - [ ] Add AutoUpdate
-- [ ] Add bclm support for Apple Silicon (whenever I have access to a Mac with an Apple Silicon processor)
 - [ ] Switch to Swift
 
 <p>

@@ -11,34 +11,69 @@ display_error() {
     osascript -e "display dialog \"$1\" buttons \"OK\" default button \"OK\" with title \"Error\""
 }
 
+detect_cpu_architecture() {
+
+    architecture=$(uname -m)
+    local my_var
+
+    if [[ "$architecture" == *"arm64"* ]]; then
+        my_var=true
+    elif [[ "$architecture" == *"x86_64"* ]]; then
+        my_var=false
+    else
+        date_string=$(date +"%b %d %Y - %H:%M")
+        echo "$date_string: Problem during the detection of the CPU architecture"
+        exit 1
+    fi
+
+    echo "$my_var"
+}
+
+isAppleSilicon=$(detect_cpu_architecture)
+
 if [ ! -e "/usr/local/bin/PlugNPlayMac/bclm" ]; then
 
     selectedDisplay=""
 
     process_lines() {
-    local output="$1"
+        local output="$1"
 
-    # Initialize arrays for line numbers and lines
-    line_numbers=()
-    lines=()
+        # Initialize arrays for line numbers and lines
+        line_numbers=()
+        lines=()
 
-    # Read each line and add it to the arrays, skipping empty or whitespace-only lines
-    line_number=1
-    while IFS= read -r line; do
-        if [[ "$line" =~ [^[:space:]] ]]; then
-        line_numbers+=("$line_number")
-        lines+=("$line")
-        ((line_number++))
-        fi
-    done <<< "$output"
+        # Read each line and add it to the arrays, skipping empty or whitespace-only lines
+        line_number=1
+        while IFS= read -r line; do
+            if [[ "$line" =~ [^[:space:]] ]]; then
+            line_numbers+=("$line_number")
+            lines+=("$line")
+            ((line_number++))
+            fi
+        done <<< "$output"
 
-    for i in "${!line_numbers[@]}"; do
-        echo "${line_numbers[i]}) ${lines[i]}"
-    done
+        for i in "${!line_numbers[@]}"; do
+            echo "${line_numbers[i]}) ${lines[i]}"
+        done
     }
 
-    # Using the process_lines function with ioreg command output
-    output1=$(ioreg -lw0 | grep 'IODisplayEDID' | sed '/[^<]*</s///' | xxd -p -r | strings -10)
+    if $isAppleSilicon; then
+
+        # Get the complete output of system_profiler SPDisplaysDataType
+        display_info=$(system_profiler SPDisplaysDataType)
+        # Extract display names
+        display_names_and_resolutions=$(echo "$display_info" | awk '/Displays:/{p=1; next} p && /^$/{p=0} p && !/^$/ && $1 != "Display" {if ($1 == "Display") name=$2; else if ($1 == "Resolution:") print name, prev_line} {prev_line = $0}')
+        # Use sed to remove trailing colons from names, "Display Type:" and leading spaces in lines
+        output1=$(echo "$display_names_and_resolutions" | sed -e 's/:$//' -e 's/Display Type: //' -e 's/^[[:space:]]*//')
+        # Print display names and their respective resolutions
+        # echo "$currentDisplay"
+
+    else
+        # Return the name of the different display connected to the mac
+        # If the built in display is connected but close it doesn't appear
+        commandDetectDisplay="ioreg -lw0 | grep 'IODisplayEDID' | sed '/[^<]*</s///' | xxd -p -r | strings -10"
+    fi
+
     process_lines "$output1"
 
     echo "Select the number of the display you want to use"
@@ -152,25 +187,36 @@ if [ ! -e "/usr/local/bin/PlugNPlayMac/bclm" ]; then
     # Declare the selectedBatteryValue variable
     selectedBatteryValue=""
 
-    echo "Select the number of the battery value you want to use"
+    if $isAppleSilicon; then
 
-    # Prompt the user for an integer between 50 and 95
-    while true; do
-    read -p "Enter an integer between 50 and 95 or 'exit()' to quit: " user_input
+        echo "ATTENTION: The only battery value supported on Apple Silicon is 80."
+        echo "So the value will be automatically set to this value."
+        read -p "For more info visit: https://github.com/zackelia/bclm. Press enter to continue." user_input
+        selectedBatteryValue="80"
 
-    if [[ "$user_input" == "exit()" ]]; then
-        echo "Exiting the script."
-        exit 1
-    fi
-
-    # Check if the input is a valid integer between 50 and 95
-    if [[ "$user_input" =~ ^[0-9]+$ ]] && ((user_input >= 50)) && ((user_input <= 95)); then
-        selectedBatteryValue="$user_input"  # Store the selected value in the variable
-        break
     else
-        echo "Invalid line number. Please try again or enter 'exit()' to quit."
+
+        echo "Select the number of the battery value you want to use"
+
+        # Prompt the user for an integer between 50 and 95
+        while true; do
+        read -p "Enter an integer between 50 and 95 or 'exit()' to quit: " user_input
+
+        if [[ "$user_input" == "exit()" ]]; then
+            echo "Exiting the script."
+            exit 1
+        fi
+
+        # Check if the input is a valid integer between 50 and 95
+        if [[ "$user_input" =~ ^[0-9]+$ ]] && ((user_input >= 50)) && ((user_input <= 95)); then
+            selectedBatteryValue="$user_input"  # Store the selected value in the variable
+            break
+        else
+            echo "Invalid line number. Please try again or enter 'exit()' to quit."
+        fi
+        done
+
     fi
-    done
 
     # Print the selectedBatteryValue variable
     # echo "Selected Battery Value: $selectedBatteryValue"

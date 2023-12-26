@@ -93,3 +93,4 @@ iOSInjectionProject/
 .DS_Store
 personalParam.sh
 test.sh
+nohup.out
