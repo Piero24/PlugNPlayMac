@@ -112,9 +112,27 @@ if [ ! -e "/usr/local/bin/PlugNPlayMac/bclm" ]; then
     clear
 
     selectedWifi=""
-
+    
     # Using the process_lines function with airport command output
     output2=$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk '/ SSID:/ {print $2}')
+
+    if [ -z "$output2" ]; then
+        for i in {0..100}; do
+            # Get the Wi-Fi network name
+            currentWifi=$(networksetup -getairportnetwork en$i | awk -F ': ' '/Current Wi-Fi Network/{print $2}')
+
+            # If currentWifi is not empty, break the loop
+            if [ ! -z "$currentWifi" ]; then
+                output2=$(echo "$currentWifi" | sed 's/Current Wi-Fi Network: //')
+                break
+            fi
+        done
+        if [ -z "$output2" ]; then
+            echo "ERROR: $isAppleSilicon Can't find the Wi-Fi name"
+            exit 1
+        fi
+    fi
+
     process_lines "$output2"
 
     echo "Select the number of the wifi you want to use"
@@ -320,6 +338,5 @@ else
 
     # pkill caffeinate
     launchctl load /Library/LaunchAgents/com.launch.plug.and.play.mac.plist
-
     echo "Done."
 fi
