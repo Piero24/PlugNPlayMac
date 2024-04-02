@@ -31,6 +31,29 @@ while true; do
     commandDetectWifi="/Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | awk '/ SSID:/ {print $2}'"
     currentWifi=$(eval "$commandDetectWifi")
     # echo "$currentWifi"
+    
+    currentWifi=$(eval "$commandDetectWifi")
+
+    # If currentWifi is empty, try another method
+    if [ -z "$currentWifi" ]; then
+
+        log_error "E0" "$isAppleSilicon" "Can't find the wifi with airport -I"
+
+        for i in {0..100}; do
+            # Get the Wi-Fi network name
+            currentWifi=$(networksetup -getairportnetwork en$i | awk -F ': ' '/Current Wi-Fi Network/{print $2}')
+
+            # If currentWifi is not empty, break the loop
+            if [ ! -z "$currentWifi" ]; then
+                log_error "E0" "$isAppleSilicon" "Wi-Fi found with at en$i"
+                break
+            fi
+        done
+        if [ -z "$currentWifi" ]; then
+            log_error "E0" "$isAppleSilicon" "Can't find the wifi with networksetup"
+        fi
+        currentWifi=$(echo "$currentWifi" | sed 's/Current Wi-Fi Network: //')
+    fi
 
     if $isAppleSilicon; then
 
@@ -198,6 +221,20 @@ while true; do
 
     elif [ $isDisplayFound == false ]; then
         if [ $isRunning == true ]; then
+
+            ##
+            ## TEST FOR BUG FIX
+            ##
+
+            # Check 2 times instead of one vecause sometimes the mac 
+            # doesn't detect the second monitor correctly
+            # if [[ $firstTime == true ]]; then
+
+            #     firstTime=false
+            #     sleep 15
+            #     continue
+
+            # fi
 
             # Kill all the caffeinate process
             pkill caffeinate

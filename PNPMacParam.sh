@@ -30,6 +30,11 @@ isCaffeinate=false
 isBclm=false
 # Apps
 areAppsOpen=false
+##
+## TEST FOR BUG FIX
+##
+# Check two times if the second monitor is connected before continue
+firstTime=true
 
 # ID of the last active caffeinate process (0 at start of the script)
 PMSETPID=0
