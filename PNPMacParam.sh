@@ -11,7 +11,7 @@ listWifiNames=()
 # Ex: listAppToOpen=("App Name" "Other App Name" "Other App Name")
 listAppToOpen=()
 # Max battery level when connected (suggest 77)
-batteryValue=77
+batteryValue=80
 
 ##########################################################################
 #
@@ -30,12 +30,9 @@ isCaffeinate=false
 isBclm=false
 # Apps
 areAppsOpen=false
-##
-## TEST FOR BUG FIX
-##
 # Check two times if the second monitor is connected before continue
 firstTime=true
-
+lastUpdateTime=""
 # ID of the last active caffeinate process (0 at start of the script)
 PMSETPID=0
 # main directory
@@ -75,8 +72,10 @@ detect_cpu_architecture() {
     local my_var
 
     if [[ "$architecture" == *"arm64"* ]]; then
+        echo "$date_string: Apple Silicon CPU architecture detected"
         my_var=true
     elif [[ "$architecture" == *"x86_64"* ]]; then
+        echo "$date_string: Intel CPU architecture detected"
         my_var=false
     else
         date_string=$(date +"%b %d %Y - %H:%M")
@@ -94,8 +93,8 @@ log_error() {
     local date_string=$(date +"%b %d %Y - %H:%M")
 
     if [ -n "$isAppleSilicon" ]; then
-        echo "$date_string: (I$msg_type): $msg_text"
-    else
         echo "$date_string: (A$msg_type): $msg_text"
+    else
+        echo "$date_string: (I$msg_type): $msg_text"
     fi
 }

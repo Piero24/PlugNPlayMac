@@ -113,8 +113,14 @@ if [ ! -e "/usr/local/bin/PlugNPlayMac/bclm" ]; then
 
     selectedWifi=""
     
-    # Using the process_lines function with airport command output
-    output2=$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk '/ SSID:/ {print $2}')
+    CurrentOS=$(sw_vers -productVersion)
+    OS_VERSION=$(echo "$CurrentOS" | awk -F. '{print $1 "." $2}')
+
+    if (( $(echo "$OS_VERSION >= 15.0" | bc -l) )); then
+        output2=$(system_profiler SPAirPortDataType | awk '/Current Network/ {getline;$1=$1;print $0 | "tr -d ':'";exit}')
+    else
+        output2=$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk '/ SSID:/ {print $2}')
+    fi
 
     if [ -z "$output2" ]; then
         for i in {0..100}; do

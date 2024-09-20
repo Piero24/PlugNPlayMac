@@ -27,33 +27,41 @@ while true; do
     isWifiFound=false
     isSleep=false
 
-    # Return the name of the wifi connected to the mac
-    commandDetectWifi="/Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | awk '/ SSID:/ {print $2}'"
-    currentWifi=$(eval "$commandDetectWifi")
-    # echo "$currentWifi"
-    
-    currentWifi=$(eval "$commandDetectWifi")
+    CurrentOS=$(sw_vers -productVersion)
+    OS_VERSION=$(echo "$CurrentOS" | awk -F. '{print $1 "." $2}')
 
-    # If currentWifi is empty, try another method
-    if [ -z "$currentWifi" ]; then
+    if (( $(echo "$OS_VERSION >= 15.0" | bc -l) )); then
+        currentWifi=$(system_profiler SPAirPortDataType | awk '/Current Network/ {getline;$1=$1;print $0 | "tr -d ':'";exit}')
+        # echo "$currentWifi"
+    else
+        commandDetectWifi="/Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | awk '/ SSID:/ {print $2}'"
 
-        log_error "E0" "$isAppleSilicon" "Can't find the wifi with airport -I"
+        # Return the name of the wifi connected to the mac
+        currentWifi=$(eval "$commandDetectWifi")
 
-        for i in {0..100}; do
-            # Get the Wi-Fi network name
-            currentWifi=$(networksetup -getairportnetwork en$i | awk -F ': ' '/Current Wi-Fi Network/{print $2}')
-
-            # If currentWifi is not empty, break the loop
-            if [ ! -z "$currentWifi" ]; then
-                log_error "E0" "$isAppleSilicon" "Wi-Fi found with at en$i"
-                break
-            fi
-        done
+        # If currentWifi is empty, try another method
         if [ -z "$currentWifi" ]; then
-            log_error "E0" "$isAppleSilicon" "Can't find the wifi with networksetup"
+
+            log_error "E0" "$isAppleSilicon" "Can't find the wifi with airport -I"
+
+            for i in {0..100}; do
+                # Get the Wi-Fi network name
+                currentWifi=$(networksetup -getairportnetwork en$i | awk -F ': ' '/Current Wi-Fi Network/{print $2}')
+
+                # If currentWifi is not empty, break the loop
+                if [ ! -z "$currentWifi" ]; then
+                    log_error "E0" "$isAppleSilicon" "Wi-Fi found with at en$i"
+                    break
+                fi
+            done
+            if [ -z "$currentWifi" ]; then
+                log_error "E0" "$isAppleSilicon" "Can't find the wifi with networksetup"
+            fi
+            currentWifi=$(echo "$currentWifi" | sed 's/Current Wi-Fi Network: //')
         fi
-        currentWifi=$(echo "$currentWifi" | sed 's/Current Wi-Fi Network: //')
     fi
+
+    # echo "$currentWifi"
 
     if $isAppleSilicon; then
 
@@ -115,6 +123,16 @@ while true; do
     idle_time_minutes=$((idle_time_seconds / 60))
     # date_string=$(date +"%b %d %Y - %H:%M")
     # echo "$date_string: Last interaction was $idle_time_seconds seconds ago and $idle_time_minutes minutes ago"
+
+    if [[ $firstTime == false ]]; then
+        # Check if it's been more than 10 minutes since firstTime was set to false
+        currentTime=$(date +%s)
+        timeDifference=$((currentTime - lastUpdateTime))
+        if (( timeDifference > 300 )); then
+            firstTime=true
+            log_error "S1" "$isAppleSilicon" "More than 10 minutes have passed since the last check. Resetting firstTime to true"
+        fi
+    fi
 
     if [[ $isDisplayFound == true && $isWifiFound == true ]]; then    
         if [[ $isRunning == false && $isSleep == false ]]; then
@@ -186,7 +204,6 @@ while true; do
 
         elif [[ $isRunning == true && $isSleep == true ]]; then
             if [ $isCaffeinate == true ]; then
-
                 # Kill all the caffeinate process
                 pkill caffeinate
 
@@ -222,19 +239,17 @@ while true; do
     elif [ $isDisplayFound == false ]; then
         if [ $isRunning == true ]; then
 
-            ##
-            ## TEST FOR BUG FIX
-            ##
-
             # Check 2 times instead of one vecause sometimes the mac 
             # doesn't detect the second monitor correctly
-            # if [[ $firstTime == true ]]; then
+            if [[ $firstTime == true ]]; then
 
-            #     firstTime=false
-            #     sleep 15
-            #     continue
+                log_error "S91" "$isAppleSilicon" "First time the display is not found. Restart the check."
+                firstTime=false
+                lastUpdateTime=$(date +%s)
+                sleep 15
+                continue
 
-            # fi
+            fi
 
             # Kill all the caffeinate process
             pkill caffeinate
