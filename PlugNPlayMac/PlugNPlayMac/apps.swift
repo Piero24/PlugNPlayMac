@@ -79,6 +79,56 @@ func closeAppByName(appName: String) {
         app.terminate()  // Send the terminate signal
         printLog("S4", "\(appName) has been closed")
     } else {
-        printLog("E4", "Application \(appName) is not running")
+        closeAppWithAppleScript(appName: appName)
     }
+}
+
+
+func closeAppWithAppleScript(appName: String) {
+    // Prepare the AppleScript command to quit the application
+    let appleScript = """
+    tell application "\(appName)" to quit
+    """
+    
+    // Create a process to execute the 'osascript' command
+    let process = Process()
+    process.launchPath = "/usr/bin/osascript"
+    
+    // Create a pipe to capture the output
+    let outputPipe = Pipe()
+    process.standardOutput = outputPipe
+    process.standardError = outputPipe // Capture standard error as well
+    
+    // Pass the AppleScript as an argument
+    process.arguments = ["-e", appleScript]
+    
+    // Try to launch the osascript process
+    do {
+        try process.run()
+        process.waitUntilExit()
+        
+        let status = process.terminationStatus
+        
+        // Read the output from the pipe
+        let data = outputPipe.fileHandleForReading.readDataToEndOfFile()
+        let output = String(data: data, encoding: .utf8) ?? ""
+        
+        // Check if the output contains the error code -128
+        if status == 0 || output.contains("-128") {
+            printLog("S4", "\(appName) has been forcefully closed using osascript.")
+        } else {
+            printLog("E4", "Failed to close \(appName) using osascript with status code: \(status).")
+        }
+    } catch {
+        printLog("E4", "Error while trying to close \(appName) with osascript: \(error.localizedDescription)")
+    }
+}
+
+
+func isAppRunning(appName: String) -> Bool {
+    let workspace = NSWorkspace.shared
+    let runningApps = workspace.runningApplications
+    
+    // Check if any running application has the specified localized name
+    return runningApps.contains(where: { $0.localizedName == appName })
 }

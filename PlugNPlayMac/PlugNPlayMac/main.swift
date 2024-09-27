@@ -54,7 +54,6 @@ while true {
     
     // Get a list of connected displays.
     let displayList: [String] = getDisplayNames()
-    print(displayList)
     
     // Check if target display is connected.
     let isDisplayFound: Bool = displayFound(inputParams.displayNames, displayList)
@@ -156,6 +155,8 @@ while true {
                 if batteryResult == 100 {
                     val.isBclm = false
                 }
+            } else if isAppRunning(appName: alternativeBclm) {
+                closeAppByName(appName: alternativeBclm)
             }
         }
     }

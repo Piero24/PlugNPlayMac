@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Cocoa
 
 
 /// Sets the battery charge limit (BCLM) for the system.
