@@ -221,7 +221,7 @@ while true; do
         elif [[ $isRunning == true && $isSleep == false ]]; then
             if [ $isCaffeinate == false ]; then
 
-                 # If is passed less than 10 minutes from the last user interaction
+                # If is passed less than 10 minutes from the last user interaction
                 # Needed for prevent the mac start caffeinate when the user is not using the mac
                 if [ "$idle_time_minutes" -lt 10 ]; then
 
