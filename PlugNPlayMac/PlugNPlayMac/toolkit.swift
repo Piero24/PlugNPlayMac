@@ -114,17 +114,22 @@ struct NoSleep {
     ///   ```
     static func startCaffeinate() -> Bool {
         let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/sh")
+        process.executableURL = URL(fileURLWithPath: "/bin/bash")
+        
+        // Block termination signals and run caffeinate in the background
         process.arguments = ["-c", "nohup caffeinate -u -i -d & wait 2>/dev/null &"]
+        
         process.standardOutput = FileHandle.nullDevice
         process.standardError = FileHandle.nullDevice
-        
+
         do {
+            // Prevent to kill the process if stopCaffeinate() is lounched immediatly before
+            sleep(2)
             try process.run()
-            printLog("S4", "Start caffeinate successfully")
+            printLog("S4", "Started caffeinate with signal blocking")
             return true
         } catch {
-            printLog("E4", "Can't run caffeinate error: \(error)")
+            printLog("E4", "Can't run caffeinate, error: \(error)")
             return false
         }
     }
@@ -151,7 +156,7 @@ struct NoSleep {
         
         do {
             try process.run()
-            printLog("S4", "Stop caffeinate successfully")
+            printLog("S4", "All caffeinate process killed successfully")
             return true
         } catch {
             printLog("E4", "Can't stop caffeinate error: \(error)")

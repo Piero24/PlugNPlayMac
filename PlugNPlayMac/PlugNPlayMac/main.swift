@@ -74,6 +74,22 @@ while true {
         printLog("S1", "More than 5 minutes have passed since the last check. Resetting firstTime to true")
     }
     
+    print( val.firstTime,
+           val.isRunning,
+           val.isCaffeinate,
+           val.areAppsOpen,
+           val.isBclm,
+           val.lastUpdateTime)
+    
+    print( networkName,
+           isWifiFound,
+           displayList,
+           isDisplayFound,
+           isSleep,
+           (idleTime ?? -1),
+           currentTime,
+           timeDifference)
+    
     // If the desired display and Wi-Fi are connected and system is not sleeping
     if isDisplayFound && isWifiFound {
         if !val.isRunning && !isSleep {
@@ -82,8 +98,7 @@ while true {
                 // Stop previous caffeinate processes if any.
                 var _ = NoSleep.stopCaffeinate()
                 // Start caffeinate to keep the system awake.
-                var _ = NoSleep.startCaffeinate()
-                val.isCaffeinate = true
+                val.isCaffeinate = NoSleep.startCaffeinate()
                 val.isRunning = true
             }
 
@@ -106,15 +121,10 @@ while true {
         } else if val.isRunning && isSleep {
             // If system goes to sleep while apps are running, stop caffeinate.
             if val.isCaffeinate {
-                if NoSleep.stopCaffeinate() {
-                    printLog("S1", "All caffeinate process killed successfully")
-                    val.isCaffeinate = false
-                } else {
-                    printLog("E1", "No caffeinate process found to kill")
-                }
+                val.isCaffeinate = !NoSleep.stopCaffeinate()
             }
         } else if val.isRunning && !isSleep {
-            // If the system is awake and caffeinate is not running, restart caffeinate.
+            // If the system is awake and caffeinate is not running, restart caffeinate
             if !val.isCaffeinate {
                 if ((idleTime ?? 1) / 60) < 10 {
                     var _ = NoSleep.stopCaffeinate()
@@ -136,7 +146,7 @@ while true {
             }
 
             // Stop the caffeinate process if it is running.
-            val.isCaffeinate = NoSleep.stopCaffeinate()
+            val.isCaffeinate = !NoSleep.stopCaffeinate()
             val.isRunning = false
 
             // Close all apps that were opened.
