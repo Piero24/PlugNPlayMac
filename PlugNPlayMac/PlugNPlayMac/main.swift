@@ -74,22 +74,6 @@ while true {
         printLog("S1", "More than 5 minutes have passed since the last check. Resetting firstTime to true")
     }
     
-    print( val.firstTime,
-           val.isRunning,
-           val.isCaffeinate,
-           val.areAppsOpen,
-           val.isBclm,
-           val.lastUpdateTime)
-    
-    print( networkName,
-           isWifiFound,
-           displayList,
-           isDisplayFound,
-           isSleep,
-           (idleTime ?? -1),
-           currentTime,
-           timeDifference)
-    
     // If the desired display and Wi-Fi are connected and system is not sleeping
     if isDisplayFound && isWifiFound {
         if !val.isRunning && !isSleep {
