@@ -37,7 +37,7 @@
 ---
 
 <br/><br/>
-<h2 id="itroduction">📔  Itroduction</h2>
+<h2 id="itroduction">📔  Introduction</h2>
 <p>
     This is a script that automates tasks when you connect a device to your Mac.
     Let's add some context to the project!
